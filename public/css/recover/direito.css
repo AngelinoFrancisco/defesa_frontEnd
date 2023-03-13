@@ -1,0 +1,33 @@
+ 
+ .direito{  
+     
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-left:20px;
+ } 
+  
+  
+
+.direito #img{
+    height: 60%;
+    width: 60%;
+    background: url("../../images/recover/images5.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center; 
+    transform: translateY(-30px);
+}
+
+.direito #img-update{
+    height: 60%;
+    width: 60%;
+    background: url("../../images/recover/images1.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center; 
+    transform: translateY(-30px);
+}
+  
+ 

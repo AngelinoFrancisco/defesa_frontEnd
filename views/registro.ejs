@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/registro/direito.css">
+    <link rel="stylesheet" href="/css/registro/esquerdo.css">
+    <title>Document</title>
+</head>
+<body > 
+
+    <div class="section">
+        <div class="logo">
+            
+            <div class="img"></div>
+            <p class="titulo"><b>PAP 2022/2023</b></p>
+        </div>
+
+        <form action="/registro" method="post"  >
+             
+            <input type="text" name="nome" class="form-control my-2" placeholder="Nome" > 
+            <input type="password" name="password" class="form-control my-2" placeholder="Password" >
+            <input type="email" name="email" class="form-control my-2" placeholder="Email" > 
+            <input type="text" name="bipassrecover" class="form-control my-2" 
+            placeholder="BI para recuperar senha" > 
+            <div class="btns" style="width: 100%; height: 100%; display: flex;
+            justify-content: space-between;">
+                <a href="/" class="btn btn-primary " > voltar</a>
+                <button type="submit" class="btn btn-success">
+                  criar uma conta
+                </button> 
+            </div>
+        </form>
+    </div>
+</body>
+</html>

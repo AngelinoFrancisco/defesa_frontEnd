@@ -1,0 +1,63 @@
+
+.rel-container{ 
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    border-top-left-radius: 3em;
+
+    display: flex;
+    justify-content: center;
+} 
+
+header{
+    width: 80%;
+    height: 15%;
+    border-bottom: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    justify-content:space-evenly;
+    align-items:flex-end;
+
+} 
+
+ header form{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;  
+    transform: translateY(-1em);
+}
+ 
+
+ #pesquisa{
+    border: 1px solid black;
+    width: 30em ;
+}
+
+#select{
+    width: 4em;
+    transform: translateX(-6.5em);
+    border-left: 1px solid black;
+}
+
+  form select{ 
+    height: 2.3em;
+    outline: none;  
+    background: url('../../images/admin/flatLight25.png');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat; 
+    border-left-color: black; 
+
+
+}  
+
+ header  form button{
+    width: 40px;
+    height: 2.3em;
+    outline: none;  
+    background-color: #6579DD;
+    transform: translateX(-6.5em);
+ 
+
+} 

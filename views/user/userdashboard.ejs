@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/user-normal/aside.css">
+    <link rel="stylesheet" href="/css/user-normal/section.css">
+    <link rel="stylesheet" href="/css/user-normal/header.css">
+    <link rel="stylesheet" href="/css/user-normal/content.css">
+    <title>Document</title>
+</head>
+
+<body class="app1">
+
+
+    <aside>
+
+
+        <p><b>AngoHunt</b></p>
+
+
+        <div class="container">
+            <div class="links">
+                <a href="userdashboard">
+                    Home
+                </a>
+                <a href="relatorio">
+                    Relatórios
+                </a>
+
+                <a href="perfil">
+                    Meu Perfil
+                </a>
+
+                <a href="ajuda">
+                    Contactos
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="logo">
+            <div class="status">
+                <div class="img"></div>
+                <div class="dot"></div>
+            </div>
+            <h5 class="nome">usuario</h5>
+
+        </div>
+
+    </aside>
+
+    <section>
+        <header>
+            <h3> 
+                    Escolha o teste <br>
+                    que pretende realizar
+               
+            </h3>
+
+
+            <div class="container">
+
+                <form action="/search/threats" method="post">
+                    <select name="test" class="form-control ">
+
+                        <option selected> Selecionar teste</option>
+                        <option disabled> Enumaration</option>
+                        <option value="1"> xss</option>
+                        <option value="2">ddos</option>
+                        <option value="3">BF</option>
+    
+    
+                        <option disabled> Vulnerability</option>
+                        <option value="4"> SQLInjection</option>
+                        <option value="5">ddos</option>
+                        <option value="6">BF</option>
+    
+    
+                        <option disabled> Scanner</option>
+                        <option value="7"> port scan</option>
+                        <option value="8">directories</option>
+                        <option value="9">subdomains</option>
+                    </select>
+                    <input type="text" class="form-control " placeholder="URL | LOCALHOST URL | WEBSITE DOMAIN"
+                        name="search" style="margin-right:0.5em ;">
+                    <button type="submit" class="btn btn-success" onclick="sendServer()">pesquisar</button>
+
+                </form>
+            </div>
+
+        </header>
+
+        <div class="conteudos">
+
+            <p class="titulo"><b>Este é um titulo</b></p>
+
+            <div class="enum-test">
+                <p>Aqui começa todo o conteudo</p>
+
+
+                <button type="submit" class="btn btn-success">Gerar Relatório</button>
+            </div>
+
+        </div>
+    </section>
+
+</body>
+<script>
+
+    
+const socket = new WebSocket("ws://localhost:5000")
+socket.addEventListener("open", function(event){
+
+    console.log("connected to the server")
+
+})
+
+
+socket.addEventListener("message", function(event){
+    console.log("message from server", event)
+})
+
+const sendServer = ()=>{
+    socket.send("hello from client")
+}
+
+
+
+</script>
+</html>

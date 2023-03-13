@@ -1,0 +1,19 @@
+ 
+section .direito{  
+    width: 100%;
+    height: 100%; 
+}
+ 
+
+section .direito .img{
+    background: url('../../images/login/a2.gif');
+    height: 100%;
+    width: 100%; 
+    transform: translate(-50px,-80px);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;  
+}
+
+
+ 

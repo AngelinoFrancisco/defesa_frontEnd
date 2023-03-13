@@ -1,0 +1,130 @@
+ 
+
+/* from here on begins the style sheet of perfil web page */
+ 
+  .header{
+   width: 70%;
+   height: 15%; 
+   display: flex;
+   flex-direction: row;
+   justify-content: space-evenly;
+   align-items: flex-end;
+   border-bottom: 1px solid black;
+   margin-bottom: 2em;
+  }
+ .perfil{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;  
+
+ }
+    
+ .perfil .sombra {  
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+   box-shadow: 0 0 5px;
+    width: 40%;
+    height: 60%; 
+    border-radius: 0.5em; 
+     
+ }
+
+ .sombra form{
+   width: 80%;
+ }
+ .perfil .sombra button{
+    height: 3em;
+    width: 100%;
+ }
+
+ header a{
+   border: 1px solid black;
+
+ }
+  
+ 
+ .sair, .excluir{
+   display: flex;
+   flex-direction: row;
+   justify-content: space-evenly;
+   align-items: flex-end; 
+   width: 20%;
+   padding-bottom: 1em;
+   color: black;
+ }
+
+ .sair .img-sair{
+   
+   height:30px;
+   width: 40px; 
+   background: url('../../images/user/flatLight19.png');
+   background-position: center;
+   background-size: cover;
+   background-repeat: no-repeat; 
+   border-left-color: black;  
+ }
+
+ .excluir .img-excluir{
+   
+   height: 25px;
+   width: 25px; 
+   background: url('../../images/user/deletar.png');
+   background-position: center;
+   background-size: contain;
+   background-repeat: no-repeat; 
+   border-left-color: black;  
+ }
+ 
+  
+ /* from here on begins the style sheet of contactos */
+
+
+ .ajuda{
+   
+   padding-top: 5%;
+   display: flex;
+   justify-content: center;
+ }
+
+ .ajuda .sombra{
+   width: 50%;
+   height: 80%;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   box-shadow: 0 0 5px;
+ }
+
+ .ajuda .sombra form{
+   width: 80%;
+ }
+
+ .ajuda .sombra form button{
+   width: 100%;
+   height: 3em;
+ }
+
+
+ /* from here to on is the style sheet of general contenats */
+
+
+ .conteudos {
+  height: 100%;
+  width: 58%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start; 
+  padding-top: 2em;  
+  overflow-y: scroll;
+  overflow-x: hidden;
+ }
+
+ .conteudos .titulo{
+  width: 100%;
+  background-color: rgb(236, 200, 131); 
+ }

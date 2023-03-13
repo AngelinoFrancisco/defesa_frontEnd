@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css"> 
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/admin/app.css">
+    <link rel="stylesheet" href="/css/admin/aside.css">
+    <link rel="stylesheet" href="/css/admin/header.css">
+    <link rel="stylesheet" href="/css/admin/section.css">
+    <link rel="stylesheet" href="/css/admin/frequentes.css">
+    <link rel="stylesheet" href="/css/admin/operacao.css">
+
+
+    <script src="/libs/jquery.min.js"></script>
+    <script src="/js/adminjs/controladmin.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div class="app1">
+
+        <aside>
+            <div class="logo">
+                 <div class="status">    
+                    <div class="img"></div>
+                    <div class="dot"></div>
+                </div>
+                <h5 class="nome"><%= users.nome%></h5>
+
+            </div>
+
+            <div class="container">
+                <div class="links">
+                    <a href="/admin/admindashboard">
+                        <img id="rel">
+                        Relatórios
+                    </a>
+ 
+
+
+                    <a href="/admin/usuario">
+                        <img id="usu">
+                        Usuários
+                    </a>
+
+                    <a href="/admin/contacto">
+                        <img id="con">
+                        Contactos
+                    </a>
+
+                </div>
+                <a href="/logout" class="click">
+                    <img id="admin">
+                    Logout
+                </a>
+            </div>
+
+        </aside>
+        <div class="coluna">
+            <header>
+                <a class="todos"><div class="img"></div><b>Todos</b></a>
+                <a class="frequentes"><div class="img"></div><b>Frequência</b></a>
+                <a class="operacoes"><div class="img"></div><b>Atividades</b></a>
+            </header>
+            <section>
+                <div id="todos">
+                    <div class="filtro my-3">
+                        
+                    <p class="titulo"><b>Todos Usuários</b></p>
+                        <form action="/search" method="post">
+
+                            <input type="text" id="pesquisa" name="resp" class="form-control " placeholder="pesquisa">
+                               
+                            <select name="classe" id="classe" class=" form-control">
+                                    <option value="todos"  ></option>
+                                    <option value="id"> ID | Identificador</option>
+                                    <option value="nome">Nome do Usuário</option>
+                               
+                                </select>
+                          
+                            <button type="submit" class="btn btn-primary  "> </button>
+                        </form> 
+                    </div>
+
+                    <div class="usuarios">  
+                                <% if(dado){ %> 
+                                        <form action="/update" id="quadrados">
+                                            <div class="row1">
+                                                <div class="personal"></div>
+                                                <input type="text" name="nome" value="<%= dado.nome%>"
+                                                        class="form-control ">
+
+                                                
+                                                    <input type="text" name="senha" value="<%= dado.senha%>"
+                                                        class="form-control ">
+                                                    
+                                                    <a href="/update/<%=dado.email%>/<%=dado.id%>" id="sendLink"
+                                                            class="btn btn-success my-2" target="_self">Salvar</a>
+     
+                                            </div>
+                                            <div class="row2">
+
+                                                <input type="text" name="email" value="<%= dado.email%>"
+                                                        class="form-control ">
+
+                                                 
+                                                    <input type="text" name="bi" value="<%= dado.bipassrecover %>"
+                                                        class="form-control ">
+                                                 
+                                                    <a class="btn btn-danger " href="/delete/<%=dado.id%>"
+                                                        target="_self">Excluir</a>
+
+                                            </div>
+     
+                                        </form>
+                                        <% }; %>  
+                    </div>
+                </div>
+
+                <div id="frequentes">
+
+                    <div class="activos  ">
+                        
+                        <p class="titulo  "><b>Usuários Ativos</b></p>
+                        <div class="cards" id="ativos"> 
+                            
+                            <div class="dados-ativos  my-2">
+                                <div class="row1">
+                                    
+                                    <div class="personal-ativo"></div>
+                                    <label for="nome"><b>Nome</b></label>
+                                    <label for="hora"><b>Hora</b></label>
+                                    <label for="data"><b>Data de Acesso</b></label>
+                                </div>
+                                <div class="row2">
+                                    <input type="text" name="nome" id="nome" class="form-control" disabled>
+                                    <input type="text" name="hora" id="hora" class="form-control" disabled>
+                                    <input type="text" name="data" id="data" class="form-control" disabled>
+                                </div>
+
+                            </div>
+
+
+ 
+
+                        </div>
+
+
+                        <p class="titulo"><b>Usuários Inativos</b></p>
+                        <div class="cards" id="inativos"> 
+                            
+                            <div class="dados-ativos  my-2">
+                                <div class="row1">
+                                    
+                                    <div class="personal-ativo"></div>
+                                    <label for="nome"><b>Nome</b></label>
+                                    <label for="hora"><b>Hora</b></label>
+                                    <label for="data"><b>Data de Saída</b></label>
+                                </div>
+                                <div class="row2">
+                                    <input type="text" name="nome" id="nome" class="form-control" disabled>
+                                    <input type="text" name="hora" id="hora" class="form-control" disabled>
+                                    <input type="text" name="data" id="data" class="form-control" disabled>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+
+                </div>
+
+                <div id="operacoes" >
+ 
+                        <div class="cards my-4">
+                            <div class="body-card"> 
+                                <canvas id="mychart"></canvas>
+                            </div>
+                
+                        </div>
+                 
+
+                </div>
+
+            </section>
+        </div>
+    </div>
+
+</body>
+<script src="/chartjs/Chart.min.js"></script> 
+<script src="/js/adminjs/usuario.js"></script>
+
+</html> 
+                         
+                

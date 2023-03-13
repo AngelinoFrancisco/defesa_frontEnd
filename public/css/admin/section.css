@@ -1,0 +1,115 @@
+section{ 
+    height: 90%;
+    width: 100%; 
+    display:  flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;  
+}
+
+#todos{
+    height: 90%;
+    width: 100%;
+    display:  flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;  
+}
+
+#todos .titulo{
+    margin-top: 1em;
+    width: 70%;
+}
+
+section  .filtro{ 
+    display:  flex;
+    flex-direction: row; 
+    align-items: center;  
+    width: 70%;      
+
+}
+
+
+.filtro form{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 50em;    
+}
+ 
+
+.filtro form input{
+    border: 1px solid black;
+}
+
+.filtro form select{
+    width: 40px;
+    height: 2.3em;
+    outline: none;  
+    background: url('../../images/admin/flatLight25.png');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat; 
+    border-left-color: black;
+    transform: translateX(-4.6em);
+
+
+}  
+
+.filtro form button{
+    width: 40px;
+    height: 2.3em;
+    outline: none;  
+    background-color: #6579DD;
+
+    transform: translateX(-4.9em);
+
+} 
+ 
+section div .usuarios{ 
+    width: 70%;
+    height: 100%;
+    overflow-y: scroll;  
+}
+ 
+
+#quadrados{
+    width: 90%;
+    height: 40%; 
+    margin: 1em;
+    border-radius: 1em;
+    background-color: #EFEEFC;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#quadrados input{
+    width: 14em;
+    margin-right:5px ;
+}
+
+#quadrados .personal{
+    background: url('../../images/admin/Picture2.png');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;  
+
+    width: 50px;
+    height: 50px;
+
+}
+
+#quadrados .row1, #quadrados .row2{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+ 
+#quadrados .row2{
+    transform: translateX(1.5em);
+}
+

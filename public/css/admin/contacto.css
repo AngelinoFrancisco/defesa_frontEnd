@@ -1,0 +1,87 @@
+
+.conct-container{ 
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    border-top-left-radius: 3em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+} 
+
+section{
+    width: 100%;
+    height: 100%; 
+    display: flex;
+    justify-content: center; 
+}
+
+
+.feedback{
+    width: 80%;
+    margin-top: 1em;
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#quadrados{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; 
+    background-color:  #EFEEFC;
+    border-radius: 1em;
+    height: 20em ; 
+    width: 45em;
+}
+
+#quadrados .row1{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100%;
+    margin-bottom: 1em;  
+}
+
+#quadrados input{
+    width: 16em; 
+    margin-right: 1em;
+
+}
+
+#quadrados textarea{
+    width: 35em;
+    height: 10em;
+}
+
+#quadrados .personal{
+
+    
+    background: url('../../images/admin/deletar.png');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat; 
+    border-left-color: black;
+
+    width: 30px;
+    height:30px;
+}
+
+#quadrados .img{
+
+    background: url('../../images/admin/Picture2.png');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat; 
+    border-left-color: black;
+
+    width: 80px;
+    height:50px; 
+
+}

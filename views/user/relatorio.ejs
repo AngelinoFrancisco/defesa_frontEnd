@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/user-normal/aside.css"> 
+    <link rel="stylesheet" href="/css/admin/admin.css"> 
+    <title>Document</title>
+</head>
+
+<body class="app1">
+
+
+    <aside>
+
+        
+        <p><b>AngoHunt</b></p>
+     
+
+        <div class="container">
+            <div class="links">
+
+                <a href="userdashboard"> 
+                    Home
+                </a>
+                <a href="relatorio"> 
+                    Relatórios
+                </a>
+
+                <a href="perfil"> 
+                    Meu Perfil
+                </a>
+
+                <a href="ajuda"> 
+                    Contactos
+                </a>
+
+            </div>
+            
+        </div>
+
+        <div class="logo">
+            <div class="status">
+                <div class="img"></div>
+                <div class="dot"></div>
+            </div>
+            <h5 class="nome">usuario</h5>
+
+        </div>
+    </aside>
+    <div class="rel-container">
+
+        <header>
+
+            <p class="titulo" ><b>Todos os Relatórios</b></p>
+
+            <form action="/search" method="post">
+
+                <input type="text" id="pesquisa" name="resp" class="form-control " placeholder="pesquisa">
+                   
+                <select name="select" id="select" class=" form-control">
+                        <option value="todos"  ></option>
+                        <option value="id"> ID | Identificador</option>
+                        <option value="nome">Nome do Usuário</option>
+                   
+                    </select>
+              
+                <button type="submit" class="btn btn-primary  "> </button>
+            </form> 
+             
+        </header>
+
+        <section class="conteudo">
+
+        </section>
+
+       
+
+    </div>
+
+</body>
+
+</html>
