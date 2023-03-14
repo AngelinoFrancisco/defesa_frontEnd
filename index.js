@@ -1,22 +1,16 @@
 const express =require('express')
 //const sequelize = require('sequelize')
-const app = express()
-const dbconnection = require('./database/db')
+const app = express() 
 const Login = require('./routes/login')
 const Cadastro = require('./routes/registro') 
 const bodyParser = require('body-parser') 
 const axios = require('axios')
+
+
 //Middleware 
 const session = require('express-session') 
-const middle = require('./middleware/authadmin')
-//models 
-const User = require('./models/users')
-const Relatorio = require('./models/relatorio') 
-const Atividade = require('./models/atividade')
-const Contato = require('./models/contacto')
-const Frequencia = require('./models/frequencia')
-
-// controllers 
+const authAdmin = require('./middleware/adminAthorization')
+const authUser = require('./middleware/userAthorization') 
 
 
 
@@ -25,10 +19,7 @@ const ejs = require('ejs')
 const resetPassword = require('./routes/resetPassword')
 const UserOption = require('./routes/useroption')
 const Admin = require('./routes/admin')
-const Userdashboard=require('./routes/userdashboard') 
-const server = require('http').createServer(app)
-const websocket = require('ws')
-const wss = new websocket.WebSocketServer({server:server})
+const Userdashboard=require('./routes/userdashboard')  
 
 
 
@@ -47,21 +38,12 @@ app.use(session({
         maxAge: 1800000       
     }
 }))
-
-
-//Db connection 
-
-dbconnection.authenticate().then(()=>{
-    console.log('conectado com sucesso')
-}
-).catch(()=>{
-    console.log('Erro na conecao com a DB ')
-})
-//Routes conection 
+ 
 
 app.use(Login)
 app.use(Cadastro) 
-app.use(middle)
+app.use(authAdmin)
+app.use(authUser)
 app.use(Userdashboard)
 app.use(resetPassword)
 app.use(UserOption) 

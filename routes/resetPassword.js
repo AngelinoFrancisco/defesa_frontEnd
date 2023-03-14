@@ -1,6 +1,6 @@
 const express = require('express')
 const resetPassword = express.Router()
-const midAdmin = require('../middleware/authadmin')
+const midAdmin = require('../middleware/adminAthorization')
 const session = require('express-session')
 const User = require('../models/users')
 

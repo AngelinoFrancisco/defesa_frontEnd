@@ -1,24 +1,12 @@
 const express = require('express')
 const UserOption = express.Router()
-const midAdmin = require('../middleware/authadmin')
+const midAdmin = require('../middleware/adminAthorization')
 const session = require('express-session')
-const User = require('../models/users')
-const db = require('../models/index')
-const DATE = new Date() 
+const User = require('../models/users') 
+const axios = require('axios')
 
-UserOption.get('/info', (req, res) => {
-
-    User.findOne({
-        where: {
-            id: req.session.user.id
-        }
-    }).then(result => {
-        res.json(result)
-    }).catch(erro => {
-        res.send('login')
-    })
-
-})
+const api = require('../middleware/api')
+ 
 
 UserOption.get('/delete/:id', (req, res) => {
     const id = req.params.id
@@ -37,37 +25,27 @@ UserOption.get('/delete/:id', (req, res) => {
 })
 
 
-UserOption.get('/logout', (req, res) => { 
-    User.update({
-        isonline: false
-    },
-        {
-            where: {
-                id: req.session.user.id
-            }
+UserOption.get('/logout', async (req, res) => { 
+ 
+    const config= {
+        headers:{
+            'Authorization':`${req.session.token.type} ${req.session.token.token}`
         }
-    ).then(() => {
-
-        db.Frequencia.update({
-            data:DATE.toISOString(),
-            hora:DATE.toLocaleTimeString(),
-        }, {
-            where: {
-                userId:req.session.user.id
-            }
-        }).then(()=>{
-            
-        req.session.destroy()
+    }
+ 
+    console.log(config.headers)
+        
+    const response = await axios.post(`${api}/logout`, config)
+    
+       if(response == true){
+        console.log('this is response' ,response)
         res.redirect('/')
 
-        }).catch(erros=>{
-            res.status(404).send(erros)
-        })
-    }).catch((erro) => {
-        res.status(201).send(erro)
-    })
+       }else{
+        res.status(404).send('erro de token')
+       }
 
-
+     
 })
 
 UserOption.post('/update', (req, res) => {
