@@ -7,7 +7,7 @@ const authAdmin =  require('../middleware/adminAthorization')
 
 //Admin.post('/admin/login', adminController.login)
 
-Admin.get('/admin/admindashboard',  authAdmin, (req,res)=>{ 
+Admin.get('/admin/admindashboard', (req,res)=>{ 
     
     if(req.session.admin != undefined || req.session.admin != null){
         User.findAll({raw:true

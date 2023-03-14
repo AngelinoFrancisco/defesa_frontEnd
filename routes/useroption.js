@@ -14,18 +14,20 @@ UserOption.get('/delete/:id', (req, res) => {
     User.destroy({
         where: {
             id: id
-        }
+        } 
     }).then(result => {
 
         res.redirect('/admin/usuario')
     }).catch(erro => {
         res.send(erro)
-    })
+    }) 
 
 })
 
 
 UserOption.get('/logout', async (req, res) => { 
+
+    console.log('rota acessada')
  
     const config= {
         headers:{

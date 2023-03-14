@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en"> 
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,76 +12,80 @@
     <link rel="stylesheet" href="/css/admin/admin.css">
     <script src="/libs/jquery.min.js"></script>
     <script src="/js/adminjs/controladmin.js"></script>
-  
+
     <title>Document</title>
 </head>
+
 <body>
     <div class="app1">
-         
+
         <aside>
             <div class="logo">
-                <div class="status">    
-                   <div class="img"></div>
-                   <div class="dot"></div>
-               </div>
-               <h5 class="nome"><%= users.nome %></h5>
+                <div class="status">
+                    <div class="img"></div>
+                    <div class="dot"></div>
+                </div>
+                <h5 class="nome">
+                    <%= users.nome %>
+                </h5>
 
-           </div>
-    
-               <div class="container">
+            </div>
+
+            <div class="container">
                 <div class="links">
                     <a href="/admin/admindashboard">
                         <img id="rel">
                         Relatórios
-                    </a> 
-                    
-                    <a href="/admin/usuario" >
-                        <img  id="usu">
+                    </a>
+
+                    <a href="/admin/usuario">
+                        <img id="usu">
                         Usuários
                     </a>
-                    
+
                     <a href="/admin/contacto">
-                        <img  id="con">
+                        <img id="con">
                         Contactos
                     </a>
-                    
+
                 </div>
-                
-                <a href="/logout" class="click" >
+
+                <a href="/adminlogout" class="click">
                     <img id="admin">
-                Logout
-                </a>  
-               </div>
+                    Logout
+                </a>
+            </div>
         </aside>
         <div class="rel-container">
 
             <header>
 
-                <p class="titulo" ><b>Todos os Relatórios</b></p>
+                <p class="titulo"><b>Todos os Relatórios</b></p>
 
                 <form action="/search" method="post">
 
                     <input type="text" id="pesquisa" name="resp" class="form-control " placeholder="pesquisa">
-                       
+
                     <select name="select" id="select" class=" form-control">
-                            <option value="todos"  ></option>
-                            <option value="id"> ID | Identificador</option>
-                            <option value="nome">Nome do Usuário</option>
-                       
-                        </select>
-                  
+                        <option value="todos"></option>
+                        <option value="id"> ID | Identificador</option>
+                        <option value="nome">Nome do Usuário</option>
+
+                    </select>
+
                     <button type="submit" class="btn btn-primary  "> </button>
-                </form> 
-                 
+                </form>
+
             </header>
 
             <section class="conteudo">
 
             </section>
 
-           
+
 
         </div>
     </div>
 </body>
+
 </html>
