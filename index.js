@@ -5,6 +5,7 @@ const Login = require('./routes/login')
 const Cadastro = require('./routes/registro') 
 const bodyParser = require('body-parser') 
 const axios = require('axios')
+const jwt = require('jsonwebtoken')
 
 
 //Middleware 
@@ -38,21 +39,22 @@ app.use(session({
         maxAge: 1800000       
     }
 }))
- 
+
 
 app.use(Login)
-app.use(Cadastro) 
-app.use(authAdmin)
-app.use(authUser)
+app.use(Cadastro)  
 app.use(Userdashboard)
 app.use(resetPassword)
 app.use(UserOption) 
 app.use(Admin) 
 
-// connection between the server and the client
-
  
 
+
+//middlewere
+
+app.use(authAdmin)
+app.use(authUser)
 
 //Server listeing 
 app.listen(3000,(erro)=>{ 

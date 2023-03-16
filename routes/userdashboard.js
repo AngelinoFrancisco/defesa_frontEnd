@@ -1,21 +1,20 @@
 const express = require('express')
-const Userdashboard = express.Router()
-const midAdmin = require('../middleware/adminAthorization')
-const session = require('express-session')
-const User = require('../models/users') 
+const Userdashboard = express.Router() 
+const userAuth =  require('../middleware/userAthorization')
+const session = require('express-session') 
 
  
 
 
-Userdashboard.get('/user/userdashboard',(req,res)=>{ 
-    
+Userdashboard.get('/user/userdashboard', userAuth, (req,res)=>{ 
+    res.render('user/userdashboard', {users:req.session.user})
 
 })
 
 
 
-Userdashboard.get('/user/perfil',(req,res)=>{ 
-    
+Userdashboard.get('/user/perfil', userAuth, (req,res)=>{ 
+    res.render('user/perfil', {users:req})
 
 })
 

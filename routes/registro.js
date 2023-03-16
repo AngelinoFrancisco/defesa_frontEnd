@@ -1,6 +1,5 @@
 const express = require('express')
-const Sigin = express.Router()
-const User = require('../models/users')
+const Sigin = express.Router() 
 const axios = require('axios')
 
 //const bodyParser = require('body-parser')

@@ -100,27 +100,27 @@
                                                 <div class="personal"></div>
                                                 <input type="text" name="nome" value="<%= dado.nome%>"
                                                         class="form-control ">
-
-                                                
-                                                    <input type="text" name="senha" value="<%= dado.senha%>"
-                                                        class="form-control ">
                                                     
-                                                  <button type="submit"   id="sendLink"
-                                                            class="btn btn-success my-2" target="_self">Salvar
-                                                  </button>
+                                                 <input type="text" name="email" value="<%= dado.email%>"
+                                                        class="form-control ">
+
+                                                    
+                                              
      
                                             </div>
                                             <div class="row2">
 
-                                                <input type="text" name="email" value="<%= dado.email%>"
-                                                        class="form-control ">
-
+                                              
                                                  
                                                     <input type="text" name="bi" value="<%= dado.bipassrecover %>"
                                                         class="form-control ">
                                                  
                                                     <a class="btn btn-danger " href="/delete/<%=dado.id%>"
                                                         target="_self">Excluir</a>
+
+                                                        <button type="submit"   id="sendLink"
+                                                        class="btn btn-success my-2" target="_self">Salvar
+                                              </button>
 
                                             </div>
      

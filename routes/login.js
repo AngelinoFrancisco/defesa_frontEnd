@@ -1,11 +1,11 @@
 const express = require('express')
-const Login = express.Router()
-const User = require('../models/users')
+const Login = express.Router() 
 const midAdmin = require('../middleware/adminAthorization')
 const session = require('express-session')
-const bcrypt = require("bcrypt")
-const db = require('../models/index')
+const bcrypt = require("bcrypt") 
 const  axios = require('axios')
+const jwt = require('jsonwebtoken')
+const api = require('../middleware/api')
 
 
 
@@ -13,7 +13,7 @@ Login.get('/', (req, res) => {
     res.render('login')
 })
 
-Login.post('/login', async (req, res) => {
+Login.post('/', async (req, res) => {
 
     const params = {
      email:req.body.email,
@@ -24,14 +24,15 @@ Login.post('/login', async (req, res) => {
 
     try{
 
-    const response  = await axios.post('http://127.0.0.1:3333/api/login', params )
+    const response  = await axios.post(`${api}/login`, params )
+   // console.log(response)
    
     if(response.data.user.is_admin){
-
+ 
         req.session.user = response.data.user
         req.session.token = response.data.token
-        res.render('admin/admindashboard',{
-            users:response.data.user
+        res.render('admin/admindashboard', {
+            users:req.session.user
         })
 
     }else{
@@ -39,7 +40,8 @@ Login.post('/login', async (req, res) => {
         req.session.user = response.data.user
         req.session.token = response.data.token
         res.render('user/userdashboard',{
-            dados:response.data.user })
+            users:req.session.user
+        })
 
     }
 
