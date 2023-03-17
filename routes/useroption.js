@@ -23,32 +23,7 @@ UserOption.get('/delete/:id', (req, res) => {
 
 })
 
-
-UserOption.get('/logout', async (req, res) => { 
-
-    console.log('rota acessada') 
  
-    const config= {
-        headers:{
-            'Authorization':`${req.session.token.type} ${req.session.token.token}`
-        }
-    }
- 
-    console.log(config.headers)
-        
-    const response = await axios.post(`${api}/logout`, config)
-    
-       if(response == true){
-        console.log('this is response' ,response)
-        res.redirect('/')
-
-       }else{
-        res.status(404).send('erro de token')
-       }
-
-     
-})
-
 UserOption.post('/update', (req, res) => {
 
 

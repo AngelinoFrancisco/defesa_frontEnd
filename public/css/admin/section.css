@@ -107,9 +107,11 @@ section div .usuarios{
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    width: 100%; 
 }
  
-#quadrados .row2{
-    transform: translateX(1.5em);
+#quadrados .row2 button, #quadrados .row2 a{ 
+    margin-left: 1em;
+
 }
 

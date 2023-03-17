@@ -41,11 +41,11 @@ app.use(session({
 }))
 
 
-app.use(Login)
-app.use(Cadastro)  
-app.use(Userdashboard)
-app.use(resetPassword)
+app.use(Cadastro) 
+app.use(Login) 
 app.use(UserOption) 
+app.use(resetPassword)
+app.use(Userdashboard)
 app.use(Admin) 
 
  
