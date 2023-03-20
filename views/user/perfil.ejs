@@ -25,18 +25,23 @@
         <div class="container">
             <div class="links">
 
-                <a href="userdashboard"> 
+                <a href="/user/userdashboard"> 
                     Home
                 </a>
-                <a href="relatorio"> 
-                    Relatórios
+
+                <a href="/user/gerar_relatorio"> 
+                    Gerar Relatorios
                 </a>
 
-                <a href="perfil"> 
+                <a href="/user/consultar_relatorio"> 
+                    Consultar relarios
+                </a>
+
+                <a href="/user/perfil"> 
                     Meu Perfil
                 </a>
 
-                <a href="ajuda"> 
+                <a href="/user/ajuda"> 
                     Contactos
                 </a>
 
@@ -49,7 +54,7 @@
                 <div class="img"></div>
                 <div class="dot"></div>
             </div>
-            <h5 class="nome">usuario</h5>
+            <h5 class="nome"><%=users.nome %></h5>
 
         </div>
        
@@ -59,7 +64,7 @@
     <section class="perfil" >
 
         <div class="header">
-            <a href="/logout" class="sair">
+            <a href="/user/logout" class="sair">
                 <div class="img-sair"></div>
                 Sair da conta
             </a>

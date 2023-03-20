@@ -5,6 +5,25 @@ const session = require('express-session')
 const authAdmin = require('../middleware/adminAthorization')
 const api = require('../middleware/api')
 const axios = require('axios')
+ 
+
+Admin.get('/admin/grafico', authAdmin, async(req, res)=>{
+    const config = {
+        'Authorization':`${req.session.token.type} ${req.session.token.token}`
+    }
+
+    try{
+
+        const response = await axios.get(`${api}/atividades`,{
+            headers:config
+        } )
+        const dados = response.data 
+        res.status(200).send(dados)
+    }catch(evt){ 
+        console.log("erros", evt)
+        res.redirect('/')
+    }
+})
 
 
 Admin.get('/admin/logout', authAdmin, async (req, res) => {
@@ -14,41 +33,24 @@ Admin.get('/admin/logout', authAdmin, async (req, res) => {
         "Authorization": `${req.session.token.type} ${req.session.token.token}`
 
     }
-    const params = {
-        user_id: req.session.user.id
-    }
+    const  id = req.session.user.id
 
 
     try{
-        const response = await axios.post(`${api}/user`, params)
-        if(response != undefined){
-            console.log(response)
-        }
-    
+        const response = await axios.get(`${api}/logout/${id}`, 
+       {
+        headers:config
+       })
+       
+       console.log(` logout retornou :${response.data}`)
+       res.redirect('/')
         
 
     }catch(erros){
+        console.log(` logout retornou :${erros.data}`)
+        res.redirect('/')
 
     }
-
-    // try {
-    //     const response = await axios.post(`${api}/logout`, {
-    //         headers: config
-    //     },{
-    //         params:params
-    //     })
-
-    //     console.log("response", response.data)
-    //     res.redirect('/')
-
-
-
-    // } catch (errers) {
-    //     console.log("errors", errers.data)
-    //     res.redirect('/')
-
-    // }
-
 })
 
 
@@ -65,16 +67,38 @@ Admin.get('/admin/usuario', authAdmin, async (req, res) => {
         "Authorization": `${req.session.token.type} ${req.session.token.token}`
     }
 
+    const onlines = new Array()
+    const offlines = new Array()
+
     try {
         const response = await axios.get(`${api}/users`, {
             headers: config
         })
+        const online = await axios.get(`${api}/online`, {
+            headers:config
+        })
+        const offline= await axios.get(`${api}/offline`, {
+            headers:config
+        })
+ 
 
-        // console.log("resultados recebidos", response.data)
+        response.data.forEach(evt=>{
+            if(evt.is_online){
+                onlines.push(evt)
+            }else{
+                offlines.push(evt)
+            }
+        })
+ 
+        
 
         res.render('admin/usuario', {
             users: req.session.user,
-            dados: response.data
+            dados: response.data,
+            userOnlines:onlines,
+            userOfflines:offlines,
+            ons:online.data,
+            offs:offline.data
         })
 
 

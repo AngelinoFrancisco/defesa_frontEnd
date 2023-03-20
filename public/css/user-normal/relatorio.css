@@ -1,0 +1,17 @@
+
+.rel-container .contents{
+    width: 80%; 
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+
+}
+
+.contents .card, .contents .header{
+    width: 80%;
+}
+
+.contents .card .headers{
+    display: flex;
+    flex-direction: row;
+}

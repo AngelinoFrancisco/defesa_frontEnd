@@ -7,8 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/user-normal/aside.css"> 
-    <link rel="stylesheet" href="/css/admin/admin.css"> 
+    <link rel="stylesheet" href="/css/user-normal/aside.css">
+    <link rel="stylesheet" href="/css/user-normal/relatorio.css">
+    <link rel="stylesheet" href="/css/admin/admin.css">
     <title>Document</title>
 </head>
 
@@ -17,30 +18,35 @@
 
     <aside>
 
-        
+
         <p><b>AngoHunt</b></p>
-     
+
 
         <div class="container">
             <div class="links">
 
-                <a href="userdashboard"> 
+                <a href="/user/userdashboard"> 
                     Home
                 </a>
-                <a href="relatorio"> 
-                    Relatórios
+
+                <a href="/user/gerar_relatorio"> 
+                    Gerar Relatorios
                 </a>
 
-                <a href="perfil"> 
+                <a href="/user/consultar_relatorio"> 
+                    Consultar relarios
+                </a>
+
+                <a href="/user/perfil"> 
                     Meu Perfil
                 </a>
 
-                <a href="ajuda"> 
+                <a href="/user/ajuda"> 
                     Contactos
                 </a>
 
             </div>
-            
+
         </div>
 
         <div class="logo">
@@ -48,39 +54,38 @@
                 <div class="img"></div>
                 <div class="dot"></div>
             </div>
-            <h5 class="nome">usuario</h5>
+            <h5 class="nome">
+                <%=users.nome %>
+            </h5>
 
         </div>
     </aside>
     <div class="rel-container">
+        <div class="contents">
 
-        <header>
+            <form action="" method="post" class="card">
 
-            <p class="titulo" ><b>Todos os Relatórios</b></p>
+                <div class="card-body titulo ">Gerar Relatorios</div>
+                <div class="headers">
+                    <input type="text" placeholder="Nome do relatorio" name="nome" class="form-control">
+                    <select name="test" class="form-control">
 
-            <form action="/search" method="post">
-
-                <input type="text" id="pesquisa" name="resp" class="form-control " placeholder="pesquisa">
-                   
-                <select name="select" id="select" class=" form-control">
-                        <option value="todos"  ></option>
-                        <option value="id"> ID | Identificador</option>
-                        <option value="nome">Nome do Usuário</option>
-                   
+                        <option selected disabled>Selecione um tipo</option>
+                        <option value="xss"> xss Scripting</option>
+                        <option value="domains">Subdomains</option>
+                        <option value="sql">SQL Injection</option>
+                        <option value="scanner">Port Scanner</option>
                     </select>
-              
-                <button type="submit" class="btn btn-primary  "> </button>
-            </form> 
-             
-        </header>
+                </div>
+                <textarea name="content" id="" cols="30" rows="10" class="form-control"
+                    placeholder="Escreva alguma coisa"></textarea>
 
-        <section class="conteudo">
+                <button type="submit" class="btn btn-success">Criar relatorios</button>
 
-        </section>
-
-       
-
+            </form>
+        </div>
     </div>
+
 
 </body>
 

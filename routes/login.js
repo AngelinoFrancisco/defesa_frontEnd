@@ -41,6 +41,8 @@ Login.post('/', async (req, res) => {
 
         req.session.user = response.data.user
         req.session.token = response.data.token
+
+        //console.log(response.data.token)
         res.render('user/userdashboard',{
             users:req.session.user
         })

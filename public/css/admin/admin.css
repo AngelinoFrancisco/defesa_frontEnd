@@ -4,9 +4,11 @@
     height: 100%;
     background-color: white;
     border-top-left-radius: 3em;
-
     display: flex;
     justify-content: center;
+    align-items: center;
+
+
 } 
 
 header{
@@ -42,8 +44,7 @@ header{
 
   form select{ 
     height: 2.3em;
-    outline: none;  
-    background: url('../../images/admin/flatLight25.png');
+    outline: none;   
     background-position: center;
     background-size: contain;
     background-repeat: no-repeat; 

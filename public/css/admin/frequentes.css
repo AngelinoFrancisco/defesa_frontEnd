@@ -1,36 +1,24 @@
 
 
 #frequentes{ 
-    width: 80%;
+    width: 70%;
     height: 100%; 
     display: none;
     justify-content: center;
-    align-items: center;
+    align-items: center; 
 }
-
-
-.activos{ 
-    height: 100%; 
-    width: 80%;  
-    margin: 1em; 
-    
-} 
-
+ 
 .activos .titulo{
     margin-top: 1em;
 }
  
  
-.activos .cards{ 
-    height: 40%;
-    overflow-y: scroll;
-    overflow-x: hidden;
-} 
+ 
 
 .dados-ativos{
     border-radius: 0.5em;
     background-color: #EFEEFC;
-    height: 8em;
+    height: 14em;
     display: flex;
     flex-direction: column; 
     justify-content: center; 
@@ -41,24 +29,30 @@
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
+    margin: 1em;
+    
 }
 
 .dados-ativos .row1 label{
     margin-left: 4em;
-    margin-right: 4em;
+    margin-right: 4em; 
 }
 
+.dados-ativos #offlines, .dados-ativos #onlines {
+    width: 100%;
+    height: 100%;
+}
 
 .dados-ativos .row2{
     display: flex;
     flex-direction: row;
-    transform: translateX(3em);
+    transform: translateX(6em); 
 }
 
 .dados-ativos .row2 input{
-    width: 12em;
-    margin-left: 5px;
-    margin-right: 5px;
+    width: 16em; 
+    margin: 3px;
+    background-color: white;
 }
 
 .personal-ativo{
@@ -68,6 +62,6 @@
     background-size: contain;
     background-repeat: no-repeat;  
 
-    width: 50px;
-    height: 50px;
+    width: 70px;
+    height:70px;
 }

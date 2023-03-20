@@ -25,18 +25,23 @@
 
         <div class="container">
             <div class="links">
-                <a href="userdashboard">
+                <a href="/user/userdashboard"> 
                     Home
                 </a>
-                <a href="relatorio">
-                    Relatórios
+
+                <a href="/user/gerar_relatorio"> 
+                    Gerar Relatorios
                 </a>
 
-                <a href="perfil">
+                <a href="/user/consultar_relatorio"> 
+                    Consultar relarios
+                </a>
+
+                <a href="/user/perfil"> 
                     Meu Perfil
                 </a>
 
-                <a href="ajuda">
+                <a href="/user/ajuda"> 
                     Contactos
                 </a>
 
@@ -49,7 +54,7 @@
                 <div class="img"></div>
                 <div class="dot"></div>
             </div>
-            <h5 class="nome">usuario</h5>
+            <h5 class="nome"><%= users.nome %></h5>
 
         </div>
 
@@ -66,30 +71,18 @@
 
             <div class="container">
 
-                <form action="/search/threats" method="post">
+                <form action="/user/threats" method="post">
                     <select name="test" class="form-control ">
 
-                        <option selected> Selecionar teste</option>
-                        <option disabled> Enumaration</option>
-                        <option value="1"> xss</option>
-                        <option value="2">ddos</option>
-                        <option value="3">BF</option>
-    
-    
-                        <option disabled> Vulnerability</option>
-                        <option value="4"> SQLInjection</option>
-                        <option value="5">ddos</option>
-                        <option value="6">BF</option>
-    
-    
-                        <option disabled> Scanner</option>
-                        <option value="7"> port scan</option>
-                        <option value="8">directories</option>
-                        <option value="9">subdomains</option>
+                        <option selected disabled> Selecionar teste</option> 
+                        <option value="xss"> xss Scripting</option>
+                        <option value="domains">Subdomains</option>
+                        <option value="sql">SQL Injection</option> 
+                        <option value="scanner">Port Scanner</option> 
                     </select>
                     <input type="text" class="form-control " placeholder="URL | LOCALHOST URL | WEBSITE DOMAIN"
-                        name="search" style="margin-right:0.5em ;">
-                    <button type="submit" class="btn btn-success" onclick="sendServer()">pesquisar</button>
+                        name="url"  >
+                    <button type="submit" class="btn btn-success">pesquisar</button>
 
                 </form>
             </div>
@@ -110,27 +103,5 @@
         </div>
     </section>
 
-</body>
-<script>
-
-    
-const socket = new WebSocket("ws://localhost:5000")
-socket.addEventListener("open", function(event){
-
-    console.log("connected to the server")
-
-})
-
-
-socket.addEventListener("message", function(event){
-    console.log("message from server", event)
-})
-
-const sendServer = ()=>{
-    socket.send("hello from client")
-}
-
-
-
-</script>
+</body> 
 </html>
