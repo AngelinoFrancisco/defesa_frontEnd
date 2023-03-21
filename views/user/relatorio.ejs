@@ -10,15 +10,12 @@
     <link rel="stylesheet" href="/css/user-normal/aside.css">
     <link rel="stylesheet" href="/css/user-normal/relatorio.css">
     <link rel="stylesheet" href="/css/admin/admin.css">
+    <script src="/tinymce/tinymce.min.js"> </script> 
     <title>Document</title>
 </head>
 
-<body class="app1">
-
-
+<body class="body">
     <aside>
-
-
         <p><b>AngoHunt</b></p>
 
 
@@ -60,15 +57,15 @@
 
         </div>
     </aside>
-    <div class="rel-container">
+    <div class="rel">
         <div class="contents">
 
-            <form action="" method="post" class="card">
+            <form action="/user/gerar_relatorio" method="post" class="card">
 
-                <div class="card-body titulo ">Gerar Relatorios</div>
+                <div class="card-body titulo " style="color: white; background:#8200D2 ;">Gerar Relatorios</div>
                 <div class="headers">
-                    <input type="text" placeholder="Nome do relatorio" name="nome" class="form-control">
-                    <select name="test" class="form-control">
+                    <input type="text" placeholder="Nome do relatorio" style="margin-right: 1em;" name="nome" class="form-control my-2">
+                    <select name="test" class="form-control my-2">
 
                         <option selected disabled>Selecione um tipo</option>
                         <option value="xss"> xss Scripting</option>
@@ -77,16 +74,23 @@
                         <option value="scanner">Port Scanner</option>
                     </select>
                 </div>
-                <textarea name="content" id="" cols="30" rows="10" class="form-control"
-                    placeholder="Escreva alguma coisa"></textarea>
+                <textarea name="content"   cols="30" rows="10" class="form-control" placeholder="Escreva alguma coisa" id="gerador"></textarea>
 
-                <button type="submit" class="btn btn-success">Criar relatorios</button>
+                <button type="submit" class="btn btn-success my-2" >Criar relatorios</button>
 
             </form>
         </div>
     </div>
 
 
+    <script>
+        tinymce.init({
+            language:"pt_BR",
+            selector:"#gerador",
+            plugins:[
+                'lists advlist autolink link image  print preview hr searchreplace wordcount fullscreen insertdatetime media save table paste emoticons'
+            ]
+        })
+    </script>
 </body>
-
 </html>

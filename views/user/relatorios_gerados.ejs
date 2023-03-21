@@ -7,21 +7,65 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/public/css/style.css">
-    <link rel="stylesheet" href="/public/css/admin/admin.css">
-    <link rel="stylesheet" href="/public/css/user-normal/relatorio.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/user-normal/aside.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/admin/admin.css">
+    <link rel="stylesheet" href="/css/user-normal/relatorio.css">
     <title>Document</title>
 </head>
-<body> 
-    <aside>
-        <div class="container">
-            
-        <%- include("./partials/aside.ejs") %>
-        </div>
-    </aside>
+<body class="app1">
 
-    <h1>Relatorios Gerados</h1>
-    <div class="rel-container">
+
+    <aside>
+
+        
+        
+        <p><b>AngoHunt</b></p>
+     
+
+        <div class="container">
+            <div class="links">
+
+                <a href="/user/userdashboard"> 
+                    Home
+                </a>
+
+                <a href="/user/gerar_relatorio"> 
+                    Gerar Relatorios
+                </a>
+
+                <a href="/user/consultar_relatorio"> 
+                    Consultar relarios
+                </a>
+
+                <a href="/user/perfil"> 
+                    Meu Perfil
+                </a>
+
+                <a href="/user/ajuda"> 
+                    Contactos
+                </a>
+
+            </div>
+            
+        </div>
+
+        <div class="logo">
+            <div class="status">
+                <div class="img"></div>
+                <div class="dot"></div>
+            </div>
+            <h5 class="nome"><%=users.nome %></h5>
+
+        </div>
+
+
+    </aside> 
+
+    
+
+    <div class="rel">
         
 
         <div class="header">
@@ -44,6 +88,8 @@
 
         </div>
     </div>
+
+
     
 </body>
 </html>

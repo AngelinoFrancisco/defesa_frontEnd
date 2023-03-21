@@ -22,9 +22,6 @@ const UserOption = require('./routes/useroption')
 const Admin = require('./routes/admin')
 const Userdashboard=require('./routes/userdashboard')  
 
-
-
-
 app.use(express.static('public')) 
 app.set('view engine', 'ejs');
 //app uses 

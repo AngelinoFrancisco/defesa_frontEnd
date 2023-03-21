@@ -3,8 +3,45 @@ const Userdashboard = express.Router()
 const userAuth = require('../middleware/userAthorization')
 const session = require('express-session')
 const axios = require('axios')
-const api = require('../middleware/api')
+const api = require('../middleware/api') 
+const PDF = require('html-pdf')
 
+
+Userdashboard.post('/user/gerar_relatorio', userAuth, async(req, res)=>{
+ 
+    const content = req.body.content
+
+    const params= {
+        nome:req.body.nome,
+        test :req.body.test,
+        user_id:req.session.user.id,
+        created_at : Date.now()
+    }
+     
+    PDF.create(content, {}).toFile(`./public/books/${params.data}${params.nome}.pdf`, async (err, response)=>{
+        if(err){
+            console.log(err)
+        }else{
+            console.log(response) 
+            
+            try{
+                 await axios.post(`${api}/relatorio`,params)
+                res.redirect('/user/consultar_relatorio')
+                
+            }catch(erros){
+                
+             res.redirect('/user/gerar_relatorio')
+
+            }
+        }
+
+        
+    })
+
+
+
+
+});
 
 
 Userdashboard.get('/user/userdashboard', userAuth, (req, res) => {

@@ -26,7 +26,7 @@ $(document).ready(function () {
                 ctx, {
                 type: "bar",
                 data: {
-                    labels: [ xss[0].nome,domains[0].nome,sql[0].nome, scanner[0].nome],
+                    labels: [xss[0].nome,domains[0].nome,sql[0].nome, scanner[0].nome],
                     datasets: [
                         {
                             label: 'tipos de testes vs quantidade de uso',
