@@ -32,8 +32,10 @@ app.use(bodyParser.json())
  
 app.use(session({
     secret:'breakmeagainnevermore123',
+    resave:false,
+    saveUninitialized:false,
     cookie:{
-        maxAge: 1800000       
+        maxAge: 180000       
     }
 }))
 

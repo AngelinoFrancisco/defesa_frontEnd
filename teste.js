@@ -1,5 +1,8 @@
-const string = {
-    id:2,
-    nome:"ana",
-    sexo:"masculino"
-}
+
+
+const {v4:uuidv4} = require('uuid')
+
+var uuid =  uuidv4()
+
+
+console.log(uuid)
