@@ -76,10 +76,70 @@ aside{
 }
 
 
+
+
+
+/* Estizar o allbooks for users   */
 .contents .all-books{
     width: 100%;
     height: 100%;
     border: 1px solid rgb(231, 229, 229);
     margin-top: 1%;
+    padding: 1em;
 }
+
+
+.all-books .book{ 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: rgb(244, 244, 244);
+    border-radius: 5px;
+
+}
+
+.all-books .book .card-body{
+    display: flex;
+    flex-direction: row; 
+    justify-content: space-between;
+    align-items: center;
+}
+
+.all-books .book .card-body .delete-book{
+    width: 25px;
+    height: 25px; 
+    background: url('../../images/user/deletar.png');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;  
+}
+
+
+.all-books .book .card-body .download-book{
+    width: 45px;
+    height: 45px; 
+    background: url('../../images/user/flatLight25.png');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat; 
+}
+ 
+
+ 
+
+.all-books .book .card-body  input{
+    height: 3em;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    background-color: white;
+}
+
+.all-books .book .card-body #nome{
+    margin-right: 1em;
+}
+.all-books .book .card-body #data{
+    width: 80%;
+}
+
  

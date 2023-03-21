@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/css/admin/app.css">
     <link rel="stylesheet" href="/css/admin/aside.css">
     <link rel="stylesheet" href="/css/admin/admin.css">
+    <link rel="stylesheet" href="/css/user-normal/relatorio.css">
     <script src="/libs/jquery.min.js"></script>
     <script src="/js/adminjs/controladmin.js"></script>
 
@@ -17,7 +18,7 @@
 </head>
  
 <body>
-    <div class="app1">
+    <div class="body">
 
         <aside>
             <div class="logo">
@@ -57,34 +58,46 @@
                     Logout
                 </a>
             </div>
-        </aside>
-        <div class="rel-container">
+        </aside> 
 
-            <header>
 
-                <p class="titulo"><b>Todos os Relatórios</b></p>
+        
+    <div class="rel">
+        <div class="contents">
 
-                <form action="/search" method="post">
+            <form action="/user/consultar_relatorio" class="cards"  method="post">
 
-                    <input type="text" id="pesquisa" name="resp" class="form-control " placeholder="pesquisa">
+                <div class="card-body"><b class="titulo">Todos os Relatórios</b></div>
+                <div id="consult" class="my-2">
+                    <input type="text" id="pesquisa" name="resp" class="form-control mt" placeholder="Diz o que procura">
 
-                    <select name="select" id="select" class=" form-control">
-                        <option value="todos"></option>
-                        <option value="id"> ID | Identificador</option>
-                        <option value="nome">Nome do Usuário</option>
-
+                    <select name="select"  id="select"   class="form-control">
+                        <option selected disabled>Selecionar</option>
+                        <option value="acronimo">Tipo de teste</option>
+                        <option value="nome">Nome do relatorio</option>
                     </select>
+                </div>
 
-                    <button type="submit" class="btn btn-primary  "> </button>
-                </form>
+                <button type="submit" class="btn btn-success"> pesquisar </button>
+            </form>
 
-            </header>
+            <div class="all-books scroll">
 
-            <section class="conteudo">
+                <div class="book">
+                    <div class="card-body">
+                        <input type="text"  placeholder="nome" id="nome" disabled class="contain-nome form-control  "> 
+                        <input  type="text" placeholder="teste"  id="teste"  disabled class="contain-test form-control ">
+                            
+                       
+                    </div>
+                    <div class="card-body"> 
+                            <input type="text" placeholder="data" id="data" disabled class="contain-data form-control  ">
+                            <a href="#" id="deletar" class="delete-book"></a>
+                            <a href="#"  id="download" class="download-book"></a>
+                    </div>
+                </div>
 
-            </section>
-
-
+            </div>
 
         </div>
     </div>

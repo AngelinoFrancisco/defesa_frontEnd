@@ -3,40 +3,40 @@ const Userdashboard = express.Router()
 const userAuth = require('../middleware/userAthorization')
 const session = require('express-session')
 const axios = require('axios')
-const api = require('../middleware/api') 
+const api = require('../middleware/api')
 const PDF = require('html-pdf')
-const tempo =  new  Date()
-const  {v4:uuidv4} = require('uuid')
-const uuid = uuidv4()
-const fs =  require('fs')
+const tempo = new Date()
+const { v4: uuidv4 } = require('uuid')
+const uuid = uuidv4() 
+const fs = require('fs')
 
-Userdashboard.post('/user/gerar_relatorio', userAuth, async(req, res)=>{
- 
-    const content = req.body.content 
-    const params= {
-        nome:req.body.nome,
-        test:req.body.test,
-        user_id:req.session.user.id,
-        uuid:uuid
+Userdashboard.post('/user/gerar_relatorio', userAuth, async (req, res) => {
+
+    const content = req.body.content
+    const params = {
+        nome: req.body.nome,
+        test: req.body.test,
+        user_id: req.session.user.id,
+        uuid: uuid
     }
-    if( !params.nome || params.test == undefined || !params.test || !content ){
+    if (!params.nome || params.test == undefined || !params.test || !content) {
         return res.redirect('/user/gerar_relatorio')
-    }else{
- 
-    try{
-        await axios.post(`${api}/relatorio`,params)
-        PDF.create(content, {}).toFile(`./public/books/${params.uuid}.pdf`, async (err, response)=>{
-            if(err){
-                return res.redirect('/user/gerar_relatorio')
-            }else{
-                return res.redirect('/user/consultar_relatorio')
-            }
-         })
-       
-   }catch(erros){
-    res.redirect('/user/gerar_relatorio')
+    } else {
 
-   }
+        try {
+            await axios.post(`${api}/relatorio`, params)
+            PDF.create(content, {}).toFile(`./public/books/${params.uuid}.pdf`, async (err, response) => {
+                if (err) {
+                    return res.redirect('/user/gerar_relatorio')
+                } else {
+                    return res.redirect('/user/consultar_relatorio')
+                }
+            })
+
+        } catch (erros) {
+            res.redirect('/user/gerar_relatorio')
+
+        }
     }
 
 });
@@ -47,17 +47,47 @@ Userdashboard.get('/user/userdashboard', userAuth, (req, res) => {
 
 })
 
-Userdashboard.get('/user/gerar_relatorio',userAuth, (req, res)=>{
+Userdashboard.get('/user/gerar_relatorio', userAuth, (req, res) => {
 
-    res.render('user/relatorio',{users:req.session.user})
+    res.render('user/relatorio', { users: req.session.user })
 
 
 })
 
 
-Userdashboard.get('/user/consultar_relatorio',userAuth, (req, res)=>{
+Userdashboard.get('/user/consultar_relatorio', userAuth, async (req, res) => {
+    const config = {
+        "Authorization": `${req.session.token.type} ${req.session.token.token}`
+    }
 
-    res.render('user/relatorios_gerados',{users:req.session.user})
+    try {
+
+        const Duties = await axios.get(`${api}/relatorios`, {
+            headers: config
+        }) 
+ 
+        const atividades = await axios.get(`${api}/atividades`, {
+            headers:config
+        })
+        if(!atividades || atividades.data.length === 0 ){ return res.redirect('/user/userdashboard')}
+
+        if(!Duties || Duties.data.length === 0 ){
+            console.log( "esta vazio", Duties.data)
+            return res.redirect('/user/gerar_relatorio')
+        }
+
+        res.render('user/relatorios_gerados',
+            {
+                users: req.session.user,
+                Duties: Duties.data,
+                Atividades:atividades.data
+            })
+    } catch (erros) {
+        console.log(erros)
+        res.redirect('/user/logout')
+
+    }
+
 
 
 })
@@ -108,24 +138,24 @@ Userdashboard.get('/user/logout', userAuth, async (req, res) => {
 })
 Userdashboard.post('/user/threats', userAuth, async (req, res) => {
     const search = {
-        test :req.body.test,
-        url : req.body.url
+        test: req.body.test,
+        url: req.body.url
     }
     const config = {
         "Authorization": `${req.session.token.type} ${req.session.token.token}`
 
     }
 
-    try{
+    try {
         const response = await axios.get(`${api}/counts/${search.test}`, {
-            headers:config
+            headers: config
         })
         console.log('dados', response.data)
-        if(response.data === " não autenticado"){
+        if (response.data === " não autenticado") {
             return res.redirect('/')
         }
-        return  res.json(response.data)
-    }catch(errors){
+        return res.json(response.data)
+    } catch (errors) {
         console.log(errors)
         res.redirect('/')
     }

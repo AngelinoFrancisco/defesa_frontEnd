@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/libs/jquery.min.js"></script>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/user-normal/aside.css">
@@ -59,11 +60,7 @@
 
     </aside> 
 
-    
-
     <div class="rel">
-        
-
         <div class="contents">
 
             <form action="/user/consultar_relatorio" class="cards"  method="post">
@@ -84,27 +81,25 @@
 
             <div class="all-books scroll">
 
-                <div class="book">
-                    <div class="card-body">
-                        <div class="nome">
-                            <label for="nome"><b>Nome do Relatorio</b></label>
-                            <div class="contain-nome"></div>
+                <% Duties.forEach(function(duty){ %>
+                    <% Atividades.forEach(function(activity){ %>
+                        <% if(duty.atividade_id == activity.id){%>
+                    <div class="book my-3">
+                        <div class="card-body">
+                            <input type="text"  placeholder="nome" id="nome" value="<%=duty.nome %>" disabled class="contain-nome form-control  "> 
+                            <input  type="text" placeholder="teste"  id="teste" value="<%= activity.nome %>" disabled class="contain-test form-control ">
                         </div>
-                        <div class="teste">
-                            <label for="test"><b>Tipo de Teste</b></label>
-                            <div class="contain-test"></div>
+                        <div class="card-body"> 
+                                <input type="text" placeholder="data" id="data" value="<%= duty.created_at %>" disabled class="contain-data form-control  ">
+                                <a href="#" id="deletar" class="delete-book"></a>
+                                <a href="#"  id="download" class="download-book"></a>
                         </div>
-                        <a href="#" class="delete-book"></a>
                     </div>
                     
-                    <div class="card-body">
-                        <div class="data">
-                            <label for="data"><b>Data de Criação</b></label>
-                            <div class="contain-data"></div>
-                        </div>
-                        <a href="#" class="download-book"></a>
-                    </div>
-                </div>
+                <% }%>
+                <% })%>
+
+                <% })%>
 
             </div>
 
@@ -114,4 +109,8 @@
 
     
 </body>
+<script>
+
+  
+</script>
 </html>
