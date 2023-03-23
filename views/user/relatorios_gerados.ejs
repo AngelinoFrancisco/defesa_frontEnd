@@ -91,8 +91,8 @@
                         </div>
                         <div class="card-body"> 
                                 <input type="text" placeholder="data" id="data" value="<%= duty.created_at %>" disabled class="contain-data form-control  ">
-                                <a href="#" id="deletar" class="delete-book"></a>
-                                <a href="#"  id="download" class="download-book"></a>
+                                <a href="/user/excluir_relatorio/<%= duty.uuid %>" id="deletar" class="delete-book"></a>
+                                <a href="/user/download/<%=duty.uuid %>/<%= duty.nome %>"  id="download" class="download-book"></a>
                         </div>
                     </div>
                     

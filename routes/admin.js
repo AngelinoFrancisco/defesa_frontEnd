@@ -5,6 +5,7 @@ const session = require('express-session')
 const authAdmin = require('../middleware/adminAthorization')
 const api = require('../middleware/api')
 const axios = require('axios')
+const { response } = require('express')
  
 
 Admin.get('/admin/grafico', authAdmin, async(req, res)=>{
@@ -107,6 +108,96 @@ Admin.get('/admin/usuario', authAdmin, async (req, res) => {
         res.redirect('/')
 
     }
+
+
+})
+
+
+Admin.post('/admin/update', authAdmin ,async (req,res)=>{
+
+    const id = req.body.id 
+    const updatedUser = {
+        nome:req.body.nome,
+        email:req.body.email,
+        bipassrecover:req.body.bipassrecover
+
+    } 
+    const config = {
+       "Authorization": `${req.session.token.type} ${req.session.token.token}`
+   }
+
+   try{
+    const response = await axios.put(`${api}/update_user/${id}`,updatedUser, {
+        headers:config
+    })
+
+    if(!response.data){
+        return res.redirect('/admin/logout')
+    }
+
+    res.redirect('/admin/admindashboard')
+
+
+   }catch(erros){
+    console.log(erros)
+        res.redirect('/admin/logout')
+
+   }
+
+
+})
+
+Admin.post('/admin/search',authAdmin ,async (req,res)=>{
+    const search = req.body.search
+    const tipo = req.body.tipo 
+    const config = {
+       "Authorization": `${req.session.token.type} ${req.session.token.token}`
+   }
+   try{
+    const response = await axios.get(`${api}/user/${tipo}/${search}`, {
+        headers:config
+    })
+
+    if(!response.data){
+        return res.redirect('/admin/logout')
+    }
+
+    res.redirect('/admin/admindashboard')
+
+
+   }catch(erros){
+    console.log(erros)
+    res.redirect('/admin/logout')
+   }
+
+})
+
+Admin.get('/admin/delete/:id',authAdmin , async (req,res)=>{
+     const id = req.params.id
+
+     const config = {
+        "Authorization": `${req.session.token.type} ${req.session.token.token}`
+    }
+
+    try{
+
+        const response = await axios.delete(`${api}/one/${id}`,{
+            headers:config
+        } )
+
+        if(!response.data){
+            return res.redirect('/admin/logout')
+        }
+ 
+
+        res.redirect('/admin/admindashboard')
+
+    }catch(erros){
+        console.log(erros)
+
+        res.redirect('/admin/logout')
+    }
+
 
 
 })

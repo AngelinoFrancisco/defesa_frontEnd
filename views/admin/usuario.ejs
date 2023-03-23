@@ -82,13 +82,12 @@
                     <div class="filtro my-3">
 
                         <p class="titulo"><b>Todos Usuários</b></p>
-                        <form action="/search" method="post">
+                        <form action="/admin/search" method="post">
 
-                            <input type="text" id="pesquisa" name="resp" class="form-control " placeholder="pesquisa">
+                            <input type="text" id="pesquisa" name="search" class="form-control " placeholder="pesquisa">
 
-                            <select name="classe" id="classe" class=" form-control">
-                                <option value="todos"></option>
-                                <option value="id"> ID | Identificador</option>
+                            <select name="tipo" id="classe" class=" form-control"> 
+                                <option value="email">  Email do usuário</option>
                                 <option value="nome">Nome do Usuário</option>
 
                             </select>
@@ -99,7 +98,7 @@
 
                     <div class="usuarios">
                         <% dados.forEach(function(dado){%>
-                            <form action="/update" id="quadrados" method="post">
+                            <form action="/admin/update" id="quadrados" method="post">
                                 <div class="row1">
                                     <input type="text" name="id" hidden value="<%= dado.id %>">
 
@@ -116,13 +115,13 @@
 
 
 
-                                    <input type="text" name="bi" value="<%= dado.bipassrecover %>"
+                                    <input type="text" name="bipassrecover" value="<%=dado.bipassrecover %>"
                                         class="form-control ">
 
-                                    <a class="btn btn-danger " href="/delete/<%=dado.id%>" target="_self">Excluir</a>
+                                    <a class="btn btn-danger " href="/admin/delete/<%=dado.id%>" target="_self">Excluir</a>
 
                                     <button type="submit" id="sendLink" class="btn btn-success my-2"
-                                        target="_self">Salvar
+                                        target="_self">update
                                     </button>
 
                                 </div>

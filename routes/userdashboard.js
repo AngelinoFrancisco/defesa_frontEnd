@@ -24,11 +24,11 @@ Userdashboard.post('/user/gerar_relatorio', userAuth, async (req, res) => {
     } else {
 
         try {
-            await axios.post(`${api}/relatorio`, params)
             PDF.create(content, {}).toFile(`./public/books/${params.uuid}.pdf`, async (err, response) => {
                 if (err) {
                     return res.redirect('/user/gerar_relatorio')
                 } else {
+                    await axios.post(`${api}/relatorio`, params)
                     return res.redirect('/user/consultar_relatorio')
                 }
             })
@@ -53,6 +53,44 @@ Userdashboard.get('/user/gerar_relatorio', userAuth, (req, res) => {
 
 
 })
+Userdashboard.get('/user/download/:uuid/:nome', userAuth, (req,res)=>{
+    const uid = req.params.uuid
+    const nome = req.params.nome 
+    const path = `./public/books/${uid}.pdf` 
+    res.download(path,nome)
+})
+Userdashboard.get('/user/excluir_relatorio/:uuid', userAuth ,async (req,res)=>{
+    const uuids = req.params.uuid 
+    const pathfile = `../public/books/${uuids}.pdf` 
+
+    const config = {
+        "Authorization":`${req.session.token.type} ${req.session.token.token}`
+    }
+
+    try{
+        fs.rm(pathfile, async (err,response)=>{
+            if(err){
+                return res.redirect('/user/userdasboard')
+            }
+             await axios.delete(`${api}/excluir_relatorio/${uuids}`, {
+                headers:config
+            })
+            
+            res.redirect('/user/consultar_relatorio')
+
+        })
+         
+
+    }catch(erros){
+        console.log(erros)
+        res.redirect('/user/userdashboard')
+
+    }
+
+
+
+
+})
 
 
 Userdashboard.get('/user/consultar_relatorio', userAuth, async (req, res) => {
@@ -60,9 +98,10 @@ Userdashboard.get('/user/consultar_relatorio', userAuth, async (req, res) => {
         "Authorization": `${req.session.token.type} ${req.session.token.token}`
     }
 
+
     try {
 
-        const Duties = await axios.get(`${api}/relatorios`, {
+        const Duties = await axios.get(`${api}/relatorio/${req.session.user.id}`, {
             headers: config
         }) 
  
@@ -71,8 +110,7 @@ Userdashboard.get('/user/consultar_relatorio', userAuth, async (req, res) => {
         })
         if(!atividades || atividades.data.length === 0 ){ return res.redirect('/user/userdashboard')}
 
-        if(!Duties || Duties.data.length === 0 ){
-            console.log( "esta vazio", Duties.data)
+        if(!Duties || Duties.data.length === 0 ){ 
             return res.redirect('/user/gerar_relatorio')
         }
 
@@ -103,7 +141,7 @@ Userdashboard.get('/user/ajuda', userAuth, (req, res) => {
     res.render('user/ajuda', { users: req.session.user })
 })
 
-Userdashboard.get('/user/relatorio', (req, res) => {
+Userdashboard.get('/user/relatorio',userAuth ,(req, res) => {
     res.render('user/relatorio', { users: req.session.user })
 
 

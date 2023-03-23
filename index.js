@@ -17,8 +17,7 @@ const authUser = require('./middleware/userAthorization')
 
 // view 
 const ejs = require('ejs')
-const resetPassword = require('./routes/resetPassword')
-const UserOption = require('./routes/useroption')
+const resetPassword = require('./routes/resetPassword') 
 const Admin = require('./routes/admin')
 const Userdashboard=require('./routes/userdashboard')  
 
@@ -41,8 +40,7 @@ app.use(session({
 
 
 app.use(Cadastro) 
-app.use(Login) 
-app.use(UserOption) 
+app.use(Login)  
 app.use(resetPassword)
 app.use(Userdashboard)
 app.use(Admin) 
