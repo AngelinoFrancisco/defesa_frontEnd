@@ -33,9 +33,7 @@ Login.post('/', async (req, res) => {
         req.session.token = response.data.token
         
         //console.log(req.session.token)
-        res.render('admin/admindashboard', {
-            users:req.session.user
-        })
+        res.redirect('/admin/admindashboard')
 
     }else{
 

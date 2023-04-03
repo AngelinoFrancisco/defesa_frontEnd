@@ -83,33 +83,53 @@
                 </form>
 
                 <div class="all-books scroll">
-
-                    <% if(Duties.length===0){%>
-
-                        <h3 class="text-warning">Não existe Relatórios disponiveis</h3>
-                        <%}else{ %>
-                            <% Duties.forEach(function(duty){ %>
-                                <% Atividades.forEach(function(activity){%>
-                                    <% if(activity.id==duty.atividade_id){ %>
+   
+                                    <% if(Duties.length === 1 && Atividades.length === 1 ){ %>
+                                         
+                                            <% if(Atividades.id == Duties.atividade_id) {%>
                                         <div class="book my-2">
                                             <div class="card-body">
-                                                <input type="text" placeholder="nome" id="nome" value="<%= duty.nome %>"
+                                                <input type="text" placeholder="nome" id="nome" value="<%= Duties.nome %>"
                                                     disabled class="contain-nome form-control  ">
-                                                <input type="text" placeholder="teste" value="<%=activity.nome%>" id="teste" disabled
+                                                <input type="text" placeholder="teste" value="<%=Atividades.nome%>" id="teste" disabled
                                                     class="contain-test form-control ">
 
                                             </div>
                                             <div class="card-body">
-                                                <input type="text" value="<%= duty.created_at %>" placeholder="data"
+                                                <input type="text" value="<%= Duties.created_at %>" placeholder="data"
                                                     id="data" disabled class="contain-data form-control ">
-                                                <a href="/admin/delete_book/<%= duty.uuid %>" id="deletar" class="delete-book"></a>
-                                                <a href="/admin/download/<%=duty.uuid%>/<%=duty.nome%>" id="download" class="download-book"></a>
+                                                <a href="/admin/delete_book/<%= Duties.uuid %>" id="deletar" class="delete-book"></a>
+                                                <a href="/admin/download/<%=Duties.uuid%>/<%=Duties.nome%>" id="download" class="download-book"></a>
                                             </div>
                                         </div>
-                                        <%}%>
-                                            <%})%>
-                                            <%})%>
+                                        <%}%>  
+                                            
+                                        <%}else{%> 
+                                                
+                                        <%Duties.forEach(function(dado){ %>
+                                            <%Atividades.forEach(function(activity){%>
+                                                <% if(activity.id == dado.atividade_id) {%>
+                                            <div class="book my-2">
+                                                <div class="card-body">
+                                                    <input type="text" placeholder="nome" id="nome" value="<%= dado.nome %>"
+                                                        disabled class="contain-nome form-control  ">
+                                                    <input type="text" placeholder="teste" value="<%=activity.nome%>" id="teste" disabled
+                                                        class="contain-test form-control ">
+    
+                                                </div>
+                                                <div class="card-body">
+                                                    <input type="text" value="<%= dado.created_at %>" placeholder="data"
+                                                        id="data" disabled class="contain-data form-control ">
+                                                    <a href="/admin/delete_book/<%= dado.uuid %>" id="deletar" class="delete-book"></a>
+                                                    <a href="/admin/download/<%=dado.uuid%>/<%=dado.nome%>" id="download" class="download-book"></a>
+                                                </div>
+                                            </div>
                                             <%}%>
+                                                <%})%>
+                                                <%})%>
+                                                <%}%> 
+
+
                 </div>
 
             </div>

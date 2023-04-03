@@ -1,12 +1,17 @@
-const session = require("express-session"); 
+const session = require("express-session");
+const {default:axios}  =require('axios')
+const api = require('./api')
 
-function authenticated(req, res, next) {
+async function  authenticated(req, res, next) {
 
     if(req.session.user != undefined &&  req.session.user.is_admin){
         next() 
     } else { 
-        console.log('a sessão deve ter expirado no admin')
-        res.redirect('/')
+    res.redirect('/') 
+         
+
+
+
     }
 } 
 

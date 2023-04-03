@@ -83,7 +83,7 @@
 
                 <% Duties.forEach(function(duty){ %>
                     <% Atividades.forEach(function(activity){ %>
-                        <% if(duty.atividade_id == activity.id){%>
+                        <% if(duty.atividade_id == activity.id && duty.user_id == users.id){%>
                     <div class="book my-3">
                         <div class="card-body">
                             <input type="text"  placeholder="nome" id="nome" value="<%=duty.nome %>" disabled class="contain-nome form-control  "> 

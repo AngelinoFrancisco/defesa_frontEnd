@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,75 +13,94 @@
     <link rel="stylesheet" href="/css/admin/contacto.css">
     <script src="/libs/jquery.min.js"></script>
     <script src="/js/adminjs/controladmin.js"></script>
-  
+
     <title>Document</title>
 </head>
+
 <body>
     <div class="app1">
-         
+
         <aside>
             <div class="logo">
-                <div class="status">    
-                   <div class="img"></div>
-                   <div class="dot"></div>
-               </div>
-               <h5 class="nome"><%= users.nome%></h5>
+                <div class="status">
+                    <div class="img"></div>
+                    <div class="dot"></div>
+                </div>
+                <h5 class="nome">
+                    <%= users.nome%>
+                </h5>
 
-           </div>
-    
-               <div class="container">
+            </div>
+
+            <div class="container">
                 <div class="links">
                     <a href="/admin/admindashboard">
                         <img id="rel">
                         Relatórios
-                    </a> 
-                    
-                    <a href="/admin/usuario" >
-                        <img  id="usu">
+                    </a>
+
+                    <a href="/admin/usuario">
+                        <img id="usu">
                         Usuários
                     </a>
-                    
+
                     <a href="/admin/contacto">
-                        <img  id="con">
-                        Contactos
+                        <img id="con">
+                        Reclamações
                     </a>
-                    
+
                 </div>
-                <a href="/admin/logout" class="click" >
+                <a href="/admin/logout" class="click">
                     <img id="admin">
-                Logout
-                </a>  
-               </div>
+                    Logout
+                </a>
+            </div>
         </aside>
         <div class="conct-container">
             <header>
-                <p class="titulo"><b>Todos os Contactos</b></p>
+                <p class="titulo"><b>Todos as Reclamações</b></p>
             </header>
 
-            <section >
+            <section>
 
-                <div class="feedback"> 
-                        <div  id="quadrados">
-                            <div class="row1">
-                                <div class="img"></div>
-                                <input type="text" name="nome" value=" "
-                                        class="form-control " disabled>
-
-                                
-                                    <input type="text" name="senha" value=" "
-                                        class="form-control " disabled>
+                <div class="feedback">
+                    <div class="container">
+                        <% if(Reclamacao.length === 0){%>
+                            <h3 class="text-danger">Não existe nenhuma Reclamacão</h3>
+                        <% }else{  %>
+                        <% Reclamacao.forEach(function(recall){  %>
+                            <%Users.forEach(function(user){  %>
+                                <% if(recall.user_id == user.id ){  %>
+                                <div  id="quadrados" class="card my-2">
+                                    <div class="row1"> 
+                                        <input type="text" name="nome" value="<%=user.nome%>"
+                                                class="form-control " disabled>
+        
                                         
-                                <a href="#" class="personal"></a>
-                                     
-                            </div> 
- 
-                                <textarea name="content" id="" cols="30" rows="10" class="form-control" disabled></textarea>
-                           
-                        </div> 
+                                            <input type="text" name="categoria" value="<%= recall.categoria %>"
+                                                class="form-control" disabled>
+                                                
+                                        <a href="/admin/reclamacao/<%= recall.id %>" class="personal"></a>
+                                             
+                                    </div> 
+         
+                                        <div name="content" id="textarea"   >
+                                            <%=recall.conteudo%>
+                                        </div>
+                                   
+                                </div> 
+                                <%}%>
+                                <%})%>
+                                <%})%>
+                                <%}%>
+
+                    </div>
+
                 </div>
 
             </section>
         </div>
     </div>
 </body>
+
 </html>

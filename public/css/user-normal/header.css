@@ -11,7 +11,7 @@ header{
 }
 
 header h3{
-   transform: translateX(-7.5em);
+   margin-left: -24%;
 }
  
 
@@ -41,3 +41,7 @@ header .container{
     width:50%;   
     margin-left: 0.5em;
  } 
+
+ form input{
+   margin-right:5px ;
+ }

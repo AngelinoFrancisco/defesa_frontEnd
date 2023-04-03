@@ -2,6 +2,8 @@ const express = require('express')
 const resetPassword = express.Router()
 const midAdmin = require('../middleware/adminAthorization')
 const session = require('express-session') 
+const api = require('../middleware/api')
+const {default:axios} = require('axios')
 
 resetPassword.get('/resetpassword',(req,res)=>{
     res.render('recover')
@@ -9,25 +11,33 @@ resetPassword.get('/resetpassword',(req,res)=>{
 
  
 
-resetPassword.post('/resetpassword',(req,res)=>{ 
-    const email = req.body.email;
-    const bipassrecover = req.body.bipassrecover; 
- 
-    User.findOne({raw:true,
-        where:{
-            email:email,
-            bipassrecover:bipassrecover
+resetPassword.post('/resetpassword', async(req,res)=>{ 
+
+    const body ={
+        
+     email :req.body.email,
+     bipassrecover :req.body.bipassrecover
+        
+    }
+    if(body.email == null || body.bipassrecover == null){
+        return res.redirect('/resetpassword')
+    }
+
+    try{
+        const response = await axios.post(`${api}/reset`, body)
+
+        if(!response.data || !response){
+            return res.redirect('/resetpassword')
         }
-    }).then(result =>{
-        if(result!= undefined){
-            console.log(result.id)
-            res.render('recoveryupdate', {id:result.id})
-        }else{
-            res.json({'msg':'Usuario ou  senha de recuperacao nao encontrado'})
-        }
-    }).catch(erro=>{
-        res.send(erro)
-    })
+
+         res.render('recoveryupdate', {user:response.data})
+
+
+    }catch(erros){
+        console.log(erros)
+        res.redirect('/resetpassword')
+    }
+  
 
 })
 
@@ -35,24 +45,37 @@ resetPassword.post('/resetpassword',(req,res)=>{
 // update password
 
 
-resetPassword.post('/resetpasswordupdate',(req,res)=>{ 
-    const senha = req.body.senha;
+resetPassword.post('/resetpasswordupdate',async (req,res)=>{ 
+    const password = req.body.password;
     const id = req.body.id; 
-    
-    User.update({
-        //nome:nome,
-        //senha:senha,
-        senha:senha
-        //,
-        //bipassrecover:bi
-    },{where:{
+
+    const body = {
+        password:password,
         id:id
     }
-    }).then(()=>{
-        res.redirect('/login')
-    }).catch((erro)=>{
-        res.json("ocorreu um erro ao salvar a senha!", erro)
-    })
+ 
+
+    if(body.password == null || body.password == undefined){
+        return res.redirect('/resetpassword')
+    }
+
+    try{
+        const response = await axios.post(`${api}/resetupdate/${id}`, body)
+        if(!response.data || !response){ 
+            return res.redirect('/resetpassword')
+        }
+
+        return res.redirect('/')
+
+    }catch(erros){
+        console.log(erros)
+        res.redirect('/resetpassword')
+
+    }
+
+
+    
+ 
    
 })
 

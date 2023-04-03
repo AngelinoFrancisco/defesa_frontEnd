@@ -42,7 +42,7 @@
                 </a>
 
                 <a href="/user/ajuda"> 
-                    Contactos
+                    Reclamações
                 </a>
 
             </div>
@@ -69,7 +69,7 @@
                 Sair da conta
             </a>
 
-            <a href="#" class="excluir">
+            <a href="/user/excluir/<%=users.id%>" class="excluir">
                 <div class="img-excluir"></div>
                 Excluir conta
             </a>
@@ -80,11 +80,12 @@
             <p class="titulo">
                 <b> Dados Pessoais</b>
              </p>
-             <form action="" method="post">
-                 <input type="text" name="nome" class="form-control my-2" placeholder="Nome">
-                 <input type="password" name="senha" class="form-control my-2" placeholder="Senha">
-                 <input type="email" name="email" class="form-control my-2" placeholder="email">
-                 <input type="text" name="bipassrecover" class="form-control my-2" placeholder="BI "> 
+             <form action="/user/update" method="post">
+                <input type="text" name="id"  value="<%= users.id%>" hidden  >
+                 <input type="text" name="nome" class="form-control my-2" value="<%= users.nome%>" placeholder="Nome">
+                 <input type="password" name="password" class="form-control my-2" value="<%= users.password%>" placeholder="Senha">
+                 <input type="email" name="email" class="form-control my-2" value="<%= users.email%>" placeholder="email">
+                 <input type="text" name="bipassrecover" class="form-control my-2" value="<%= users.bipassrecover %>" placeholder="BI "> 
                      <button type="submit" class="btn btn-success">
                          salvar
                      </button> 

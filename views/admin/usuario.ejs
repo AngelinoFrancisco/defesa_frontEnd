@@ -53,7 +53,7 @@
 
                     <a href="/admin/contacto">
                         <img id="con">
-                        Contactos
+                        Reclamações
                     </a>
 
                 </div>
@@ -86,13 +86,14 @@
 
                             <input type="text" id="pesquisa" name="search" class="form-control " placeholder="pesquisa">
 
-                            <select name="tipo" id="classe" class=" form-control"> 
+                            <select name="tipo"  class=" form-control"> 
+                                <option disabled selected>Selecionar</option>
                                 <option value="email">  Email do usuário</option>
                                 <option value="nome">Nome do Usuário</option>
 
                             </select>
 
-                            <button type="submit" class="btn btn-primary  "> </button>
+                            <button type="submit" class="btn btn-primary">buscar </button>
                         </form>
                     </div>
 
@@ -121,7 +122,7 @@
                                     <a class="btn btn-danger " href="/admin/delete/<%=dado.id%>" target="_self">Excluir</a>
 
                                     <button type="submit" id="sendLink" class="btn btn-success my-2"
-                                        target="_self">update
+                                        target="_self">Update
                                     </button>
 
                                 </div>

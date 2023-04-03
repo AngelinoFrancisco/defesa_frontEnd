@@ -36,7 +36,13 @@ $(document).ready(function () {
                         }
                     ]
                 },
-                options: { }
+                options: {
+                    scales:{
+                        y:{
+                            beginAtZero:true
+                        }
+                    }
+                 }
 
             }
             )

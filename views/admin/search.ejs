@@ -50,7 +50,7 @@
 
                     <a href="/admin/contacto">
                         <img id="con">
-                        Contactos
+                        Reclamações
                     </a>
 
                 </div>
@@ -72,48 +72,45 @@
                     <div class="filtro my-3">
                         
                     <p class="titulo"><b>Todos Usuários</b></p>
-                        <form action="/search" method="post">
+                        <form action="/admin/search" method="post">
 
-                            <input type="text" id="pesquisa" name="resp" class="form-control " placeholder="pesquisa">
+                            <input type="text" id="pesquisa" name="search" class="form-control " placeholder="pesquisa">
                                
-                            <select name="classe" id="classe" class=" form-control">
-                                    <option value="todos"  ></option>
-                                    <option value="id"> ID | Identificador</option>
+                            <select name="tipo" id="classe" class=" form-control"> 
+                                    <option value="email"> Email do Usuario</option>
                                     <option value="nome">Nome do Usuário</option>
                                
                                 </select>
-                          
-                            <button type="submit" class="btn btn-primary  "> </button>
+                           
+                            <button type="submit" class="btn btn-primary  ">buscar </button>
                         </form> 
                     </div>
 
                     <div class="usuarios">  
                                 <% if(dado){ %> 
-                                        <form action="/update" id="quadrados">
+                                        <form action="/admin/update" id="quadrados">
                                             <div class="row1">
                                                 <div class="personal"></div>
                                                 <input type="text" name="nome" value="<%= dado.nome%>"
-                                                        class="form-control ">
-
-                                                
-                                                    <input type="text" name="senha" value="<%= dado.senha%>"
-                                                        class="form-control ">
-                                                    
-                                                    <a href="/update/<%=dado.email%>/<%=dado.id%>" id="sendLink"
-                                                            class="btn btn-success my-2" target="_self">Salvar</a>
-     
-                                            </div>
-                                            <div class="row2">
+                                                        class="form-control "> 
+                                                        
 
                                                 <input type="text" name="email" value="<%= dado.email%>"
-                                                        class="form-control ">
+                                                class="form-control ">
 
+                                            </div>
+                                            <div class="row2">
                                                  
                                                     <input type="text" name="bi" value="<%= dado.bipassrecover %>"
                                                         class="form-control ">
-                                                 
-                                                    <a class="btn btn-danger " href="/delete/<%=dado.id%>"
+                                                        
+                                                    <a class="btn btn-danger " href="/admin/delete/<%=dado.id%>"
                                                         target="_self">Excluir</a>
+
+                                                    <a href="/admin/update/<%=dado.email%>/<%=dado.id%>" id="sendLink"
+                                                        class="btn btn-success my-2" target="_self">Update</a>
+ 
+                                                 
 
                                             </div>
      

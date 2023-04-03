@@ -44,7 +44,7 @@
                 </a>
 
                 <a href="/user/ajuda"> 
-                    Contactos
+                    Reclamações
                 </a>
 
             </div>
@@ -66,18 +66,18 @@
     <section class="ajuda">
         
         <div class="sombra">
-            <p>
+            <p class="titulo">
                 <b>
                     Central de   Ajuda  
                 </b>
             </p>
-            <form action="" method="post"> 
+            <form action="/user/ajuda" method="post"> 
                 <select name="categoria" class="form-control my-2 ">
-                    <option selected disabled> Selecionar teste</option>
-                    <option value="1"> Falha de teste</option>
-                    <option value="2"> Relatório implicito</option>
-                    <option value="3">Falha no sistema</option>
-                    <option value="4">Outro</option>
+                    <option selected disabled> Selecionar </option>
+                    <option value="testes"> Falha de teste</option>
+                    <option value="relatorios"> Relatório implicito</option>
+                    <option value="sistema">Falha no sistema</option>
+                    <option value="outro">Outro</option>
                 </select>
                 <textarea name="conteudo" class="form-control my-2" cols="30" rows="10"></textarea>  
                 <button type="submit" class="btn btn-success">

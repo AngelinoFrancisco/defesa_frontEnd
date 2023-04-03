@@ -18,16 +18,19 @@ section{
 
 #todos .titulo{
     margin-top: 1em;
-    width: 70%;
+    width: 30%; 
 }
 
 section  .filtro{ 
     display:  flex;
     flex-direction: row; 
     align-items: center;  
-    width: 70%;      
+    width: 70%;  
 
 }
+
+ 
+ 
 
 
 .filtro form{
@@ -35,35 +38,27 @@ section  .filtro{
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    width: 50em;    
+    width: 100%;     
+}
+.filtro form input{
+    height: 3em;
+    width: 70%;
 }
  
 
-.filtro form input{
-    border: 1px solid black;
-}
-
-.filtro form select{
-    width: 40px;
-    height: 2.3em;
-    outline: none;  
-    background: url('../../images/admin/flatLight25.png');
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat; 
-    border-left-color: black;
-    transform: translateX(-4.6em);
+.filtro form select{ 
+    height: 3em;
+    width: 25%;
+    outline: none;    
+    margin: 5px;
 
 
 }  
 
-.filtro form button{
-    width: 40px;
-    height: 2.3em;
+.filtro form button{ 
+    height: 3em;
     outline: none;  
     background-color: #6579DD;
-
-    transform: translateX(-4.9em);
 
 } 
  
