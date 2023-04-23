@@ -335,14 +335,12 @@ Userdashboard.get('/user/logout', userAuth, async (req, res) => {
         console.log(` logout retornou :${erros.data}`)
         res.redirect('/')
 
-    }
-
-
+    } 
 })
 Userdashboard.post('/user/threats', userAuth, async (req, res) => {
     const search = {
         test: req.body.test,
-        url: req.body.url
+        target: req.body.url
     }
     const config = {
         "Authorization": `${req.session.token.type} ${req.session.token.token}`
@@ -350,14 +348,24 @@ Userdashboard.post('/user/threats', userAuth, async (req, res) => {
     }
 
     try {
-        const response = await axios.get(`${api}/counts/${search.test}`, {
+         await axios.get(`${api}/counts/${search.test}`, {
+            headers: config
+        }) 
+        
+        console.log("target", search.target )
+
+        const response = await axios.post(`${api}/bypass`,search ,{
             headers: config
         })
-        console.log('dados', response.data)
-        if (response.data === " não autenticado") {
-            return res.redirect('/')
-        }
-        return res.json(response.data)
+          
+        if(response.data){
+            return  res.render("user/result", {
+                test:search.test,
+                target:search.target,
+                users:req.session.user,
+                results:response.data
+            })
+        }  
     } catch (errors) {
         console.log(errors)
         res.redirect('/')

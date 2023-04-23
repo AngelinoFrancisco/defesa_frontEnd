@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/user-normal/aside.css">
+    <link rel="stylesheet" href="/css/user-normal/section.css">
+    <link rel="stylesheet" href="/css/user-normal/header.css">
+    <link rel="stylesheet" href="/css/user-normal/content.css">
+    <title>Document</title>
+</head>
+
+<body class="app1">
+
+
+    <aside>
+
+
+        <p><b>AngoHunt</b></p>
+
+
+        <div class="container">
+            <div class="links">
+                <a href="/user/userdashboard">
+                    Home
+                </a>
+
+                <a href="/user/gerar_relatorio">
+                    Gerar Relatorios
+                </a>
+
+                <a href="/user/consultar_relatorio">
+                    Consultar relarios
+                </a>
+
+                <a href="/user/perfil">
+                    Meu Perfil
+                </a>
+
+                <a href="/user/ajuda">
+                    Reclamações
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="logo">
+            <div class="status">
+                <div class="img"></div>
+                <div class="dot"></div>
+            </div>
+            <h5 class="nome">
+                <%= users.nome %>
+            </h5>
+
+        </div>
+
+    </aside>
+
+    <section>
+        <header>
+            <h3>
+                Escolha o teste
+                que pretende
+
+            </h3>
+
+
+            <div class="container">
+
+                <form action="/user/threats" method="post">
+                    <select name="test" class="form-control ">
+
+                        <option selected disabled> Selecionar teste</option>
+                        <option value="vulnerabilities">vulnerabilidades</option>
+                        <option value="subdomains">Subdominios</option>
+                        <option value="portscan">Varredura de Porta</option>
+                        <option value="technologies">Technologias</option>
+                    </select>
+                    <input type="text" class="form-control " placeholder="URL | LOCALHOST URL | WEBSITE DOMAIN"
+                        name="url">
+                    <button type="submit" class="btn btn-success">pesquisar</button>
+
+                </form>
+            </div>
+
+        </header>
+
+        <div class="conteudos">
+            <p class="mt-4" > Resultados da pesquisa: <%=test%> </p>
+            <% if(target == "itel.gov.ao"){%>
+                 <% if(test == "vulnerabilities" ){%>
+                    <p>Vulnerabilidade</p>: <p><b><%=results.vulnerability %></b></p><br>
+                    <p>Nível:<%=results.level%></p>  <br>
+                    <p>acesso:<%=results.manner%></p>
+                <%}%>
+
+                <% if(test == "subdomains" ){%>
+                    <p>Subdominios encontrados: de <%= target %></p><br>
+
+                    <%results.subdomains.forEach(function(domains){%>   
+                        <p><b> :: <%=domains%> </b></p>  <br>
+                    <%})%> 
+                <%}%>
+
+                <% if(test == "portscan" ){%>
+                    <p>Portas encontrados: de <%= target %></p><br>
+                    <%results.portscan.forEach(function(ports){%>   
+                        <p><b> :: <%=ports%> </b></p> <br>
+                    <%})%> 
+                <%}%>
+
+                <% if(test == "technologies" ){%>
+                    <p>Technologias encontradas: de <%= target %></p><br> 
+                    <p><b> :: <%=results.tech%> </b></p> <br>
+                <%}%>
+
+            <% }%>
+            
+            <% if(target == "uan.ao"){%>
+
+                <% if(test == "vulnerabilities" ){%>
+                  
+
+                    <p>Vulnerabilidades encontradas: de <%= target %></p><br>
+                    <%results.vulnerability.forEach(function(vulnerals){%>   
+                    <p><b> :: <%=vulnerals.vulnerability%> </b></p> <br> 
+                    <p>Nível:<%= vulnerals.level%></p> <br>
+                    <p>acesso:<%= vulnerals.manner%></p>
+                    <%})%> 
+                <%}%>
+
+                <% if(test == "subdomains" ){%>
+                    <p>Subdominios encontrados: de <%= target %></p><br>
+                    <%results.subdomains.forEach(function(domains){%>   
+                        <p><b> :: <%=domains%> </b></p> <br>
+                    <%})%> 
+                <%}%>
+
+                <% if(test == "portscan" ){%>
+                    <p>Portas encontrados: de <%= target %></p><br>
+                    <p> <b>:: <%= results.portscan%> </b></p>  
+                    
+                <%}%>
+
+                <% if(test == "technologies" ){%>
+                    <p>Technologias encontradas: de <%= target %></p><br> 
+                    <%results.tech.forEach(function(techs){%>   
+                        <p><b> :: <%=techs%> </b></p> <br>
+                    <%})%> 
+                <%}%>
+
+
+            <% }%>
+
+            <% if(target != "uan.ao" || target != "itel.gov.ao" ){%>
+                <h4 class="text-danger" > <%=results.msg %> </h4>
+            <% }%>
+            
+
+        </div>
+    </section>
+
+</body>
+
+</html>
