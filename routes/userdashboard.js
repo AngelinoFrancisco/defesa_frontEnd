@@ -6,7 +6,8 @@ const { default: axios } = require('axios')
 const api = require('../middleware/api')
 const generate = require('html-pdf')
 const tempo = new Date()
-const fs = require('fs')
+const puppeteer = require("puppeteer")
+const fs = require('fs') 
 
 
 Userdashboard.post('/user/gerar_relatorio', userAuth, async (req, res) => {
@@ -30,24 +31,37 @@ Userdashboard.post('/user/gerar_relatorio', userAuth, async (req, res) => {
     if (!params.nome || !params.test || !content) {
         return res.redirect('/user/gerar_relatorio')
     }
+ 
+    try{
 
-    try {
-        const response = await axios.post(`${api}/relatorio`, params)
 
+        const browser = await puppeteer.launch({
+            headless: "new",
+            args: ['--no-sandbox', '--disable-setuid-sandbox']
+        })
+        const page = await browser.newPage()
+        await page.setContent(content)
+        const pdf = await page.pdf()
+        await browser.close()
 
-        if (response.data) {
-            generate.create(content, {}).toFile(filepath, (err, result) => {
-                if (err) {
-                    console.log(err)
-                }
-            })
+        fs.writeFile(filepath, pdf, async function (err) {
+            if (err) {
+                console.error(err)
 
-            res.redirect('/user/consultar_relatorio')
-        }
-    } catch (erros) {
-        res.redirect('/user/gerar_relatorio')
+                return res.redirect("/user/gerar_relatorio")
+            }
+            await axios.post(`${api}/relatorio`, params)
+
+            return res.redirect("/user/consultar_relatorio")
+        })
+
+    }catch(err){
+
+        console.error(err)
+
+        return res.redirect("/user/gerar_relatorio")
+
     }
-
 
 });
 
@@ -79,21 +93,21 @@ Userdashboard.get('/user/excluir_relatorio/:uuid', userAuth, async (req, res) =>
 
     try {
 
-    
+
         await axios.delete(`${api}/excluir_relatorio/${uuids}`, {
             headers: config
-        }).then((evt)=>{
-            fs.rm(pathfile, async (err,response)=>{
-                if(err){
+        }).then((evt) => {
+            fs.rm(pathfile, async (err, response) => {
+                if (err) {
                     console.log('houve um erro')
                     return res.redirect('/user/consultar_relatorio')
                 }
                 return res.redirect('/user/consultar_relatorio')
             })
-            
 
-        }).catch((erros)=>{
-            
+
+        }).catch((erros) => {
+
             return res.redirect('/user/consultar')
         })
 
@@ -335,7 +349,7 @@ Userdashboard.get('/user/logout', userAuth, async (req, res) => {
         console.log(` logout retornou :${erros.data}`)
         res.redirect('/')
 
-    } 
+    }
 })
 Userdashboard.post('/user/threats', userAuth, async (req, res) => {
     const search = {
@@ -347,25 +361,110 @@ Userdashboard.post('/user/threats', userAuth, async (req, res) => {
 
     }
 
-    try {
-         await axios.get(`${api}/counts/${search.test}`, {
-            headers: config
-        }) 
+    function exibirModal(){
         
-        console.log("target", search.target )
+        axios.interceptors.request.use(function (config) {
+            // Exibir a modal "Processando..."
+            $('#modal-processando').modal({backdrop: 'static', keyboard: false});
+            return config;
+          }, function (error) {
+            return Promise.reject(error);
+          });
+        
+          axios.interceptors.response.use(function (response) {
+            // Esconder a modal "Processando..." e atualizar o conteúdo da modal com os dados recebidos
+            $('#modal-processando').modal('hide');
+            $('#modal-processando .modal-body').html('Os dados foram recebidos.');
+            return response;
+          }, function (error) {
+            return Promise.reject(error);
+          });
+    }
 
-        const response = await axios.post(`${api}/bypass`,search ,{
+    try {
+        await axios.get(`${api}/counts/${search.test}`, {
             headers: config
         })
-          
-        if(response.data){
-            return  res.render("user/result", {
-                test:search.test,
-                target:search.target,
-                users:req.session.user,
-                results:response.data
-            })
-        }  
+
+        console.log("target", search.target)
+
+      //  const response = await axios.post(`${api}/bypass`, search, {
+       //     headers: config
+       // })
+
+
+       if(search.test == "subdomains"){
+        const response =  await axios.get(`http://127.0.0.1:1010/api/scanner1/${search.target}`)
+         
+      const arrDatas = []
+     
+
+       arrDatas.push(response.data) 
+        return res.render("user/result", {
+            test: search.test,
+            target: search.target,
+            users: req.session.user,
+            results: arrDatas
+        })
+       }
+
+    if(search.test == "vulnerabilities"){
+        const response =  await axios.get(`http://127.0.0.1:1010/api/scanner2/nuclei?target_name=${search.target}&autoscan=false&tags=low,medium,high,critical`)
+         
+      const arrDatas = []
+
+       arrDatas.push(response.data) 
+
+       console.log(response.data.length)
+        return res.render("user/result", {
+            test: search.test,
+            target: search.target,
+            users: req.session.user,
+            results: response.data
+        })
+       }
+
+       if(search.test == "clickjacking"){
+        const response =  await axios.get(`http://127.0.0.1:1010/api/scanner4/${search.target}`)
+         
+    
+
+      //arrDatas.push(response.data)  
+        
+         
+   console.log(response.data.result[0])
+ 
+    //result = result.replace("[","").replace("]","").replace("'","\"")
+        //arrDatas.push(result)
+       
+ 
+        
+        return res.render("user/result", {
+            test: search.test,
+            target: search.target,
+            users: req.session.user,
+            results: response.data.result
+        })
+       }
+
+
+       if(search.test == "technologies"){
+        const response =  await axios.get(`http://127.0.0.1:1010/api/scanner3/info?target_name=${search.target}.ao&autoscan=true`)
+         
+      const arrDatas = []
+
+      // arrDatas.push(response.data) 
+
+       console.log(response.data.length)
+        return res.render("user/result", {
+            test: search.test,
+            target: search.target,
+            users: req.session.user,
+            results: response.data
+        })
+       }
+
+ 
     } catch (errors) {
         console.log(errors)
         res.redirect('/')

@@ -76,11 +76,11 @@
                 <form action="/user/threats" method="post">
                     <select name="test" class="form-control ">
 
-                        <option selected disabled> Selecionar teste</option>
+                        <optionr selected disabled> Selecionar teste</option>
                         <option value="vulnerabilities">vulnerabilidades</option>
-                        <option value="subdomains">Subdominios</option>
-                        <option value="portscan">Varredura de Porta</option>
+                        <option value="subdomains">Subdominios</option> 
                         <option value="technologies">Technologias</option>
+                        <option value="clickjacking">Clickjacking</option>
                     </select>
                     <input type="text" class="form-control " placeholder="URL | LOCALHOST URL | WEBSITE DOMAIN"
                         name="url">
@@ -91,81 +91,152 @@
 
         </header>
 
-        <div class="conteudos">
-            <p class="mt-4" > Resultados da pesquisa: <%=test%> </p>
-            <% if(target == "itel.gov.ao"){%>
-                 <% if(test == "vulnerabilities" ){%>
-                    <p>Vulnerabilidade</p>: <p><b><%=results.vulnerability %></b></p><br>
-                    <p>Nível:<%=results.level%></p>  <br>
-                    <p>acesso:<%=results.manner%></p>
-                <%}%>
+        <div class="conteudos"  > 
+        <% if(test == "subdomains" ){  %>
+            <%if(results){%>
+                <h4>Resultados encontrados em: <b> <%=target%></b></h4>
+                <h4>Tipo de teste: <b><%=test%> </b></h4><br><br>
 
-                <% if(test == "subdomains" ){%>
-                    <p>Subdominios encontrados: de <%= target %></p><br>
+                <%results[0].result.forEach(function(result){%>
+                    <h5>  :: <b> <%= result %> </b> </h5>
+                <%})%> 
+            <%}else{%>
+                <h3 class="text-danger" >Resultados não encontrados</h3>
+            <%}%>
+        <%}%>
 
-                    <%results.subdomains.forEach(function(domains){%>   
-                        <p><b> :: <%=domains%> </b></p>  <br>
+        <% if(test == "vulnerabilities" ){  %>
+            <%if(results){%>
+
+                <%if(results.length > 1){%>
+                    <h4>Resultados encontrados em: <b> <%=target%></b></h4>
+                    <h4>Tipo de teste: <b><%=test%> </b></h4> <br>
+    
+                    <%results.forEach(function(result){%>
+                        <h5>Vulnerabilidade: 
+                            <%result.info.tags.forEach(function(item){%>
+                               
+                                <%=item%>   
+    
+                            <%})%>
+                        
+                        </h5>
+                        <h5>Descrição: <%= result.info.description%></h5>
+                        <h5>Severidade: <%= result.info.severity%></h5>
+                        <h5>Tipo: <%= result.type%></h5>
+                        <h5>Host: <%= result.host%></h5>
+                        <h5>Endereço: <%= result["matched-at"]%></h5>
+                        <h5>Proc: <%= result["curl-command"]%></h5>
+                        
                     <%})%> 
-                <%}%>
-
-                <% if(test == "portscan" ){%>
-                    <p>Portas encontrados: de <%= target %></p><br>
-                    <%results.portscan.forEach(function(ports){%>   
-                        <p><b> :: <%=ports%> </b></p> <br>
-                    <%})%> 
-                <%}%>
-
-                <% if(test == "technologies" ){%>
-                    <p>Technologias encontradas: de <%= target %></p><br> 
-                    <p><b> :: <%=results.tech%> </b></p> <br>
-                <%}%>
-
-            <% }%>
-            
-            <% if(target == "uan.ao"){%>
-
-                <% if(test == "vulnerabilities" ){%>
+                
                   
+                <%}else{%>
+                    <h4>Resultados encontrados em: <b> <%=target%></b></h4>
+                    <h4>Tipo de teste: <b><%=test%> </b></h4><br><br>
+                    
+                    <h5>Vulnerabilidade: 
+                        <%results[0].info.tags.forEach(function(item){%>
+                           
+                            <%=item%>   
 
-                    <p>Vulnerabilidades encontradas: de <%= target %></p><br>
-                    <%results.vulnerability.forEach(function(vulnerals){%>   
-                    <p><b> :: <%=vulnerals.vulnerability%> </b></p> <br> 
-                    <p>Nível:<%= vulnerals.level%></p> <br>
-                    <p>acesso:<%= vulnerals.manner%></p>
-                    <%})%> 
-                <%}%>
-
-                <% if(test == "subdomains" ){%>
-                    <p>Subdominios encontrados: de <%= target %></p><br>
-                    <%results.subdomains.forEach(function(domains){%>   
-                        <p><b> :: <%=domains%> </b></p> <br>
-                    <%})%> 
-                <%}%>
-
-                <% if(test == "portscan" ){%>
-                    <p>Portas encontrados: de <%= target %></p><br>
-                    <p> <b>:: <%= results.portscan%> </b></p>  
+                        <%})%>
+                    
+                    </h5>
+                    <h5>Descrição: <%= results[0].info.description%></h5>
+                    <h5>Severidade: <%= results[0].info.severity%></h5>
+                    <h5>Tipo: <%= results[0].type%></h5>
+                    <h5>Host: <%= results[0].host%></h5>
+                    <h5>Endereço: <%= results[0]["matched-at"]%></h5>
+                    <h5>Proc: <%= results[0]["curl-command"]%></h5>
                     
                 <%}%>
 
-                <% if(test == "technologies" ){%>
-                    <p>Technologias encontradas: de <%= target %></p><br> 
-                    <%results.tech.forEach(function(techs){%>   
-                        <p><b> :: <%=techs%> </b></p> <br>
-                    <%})%> 
-                <%}%>
-
-
-            <% }%>
-
-            <% if(target != "uan.ao" || target != "itel.gov.ao" ){%>
-                <h4 class="text-danger" > <%=results.msg %> </h4>
-            <% }%>
             
+            <%}else{%>
+                <h3 class="text-danger" >Resultados não encontrados</h3>
+            <%}%>
+        <%}%>
 
+
+
+        <% if(test == "clickjacking" ){  %>
+            <%if(results){%> 
+
+                    <h4>Resultados encontrados em: <b> <%=target%></b></h4>
+                    <h4>Tipo de teste: <b><%=test%> </b></h4><br><br>
+           
+                    <h5>Info: <%= results[0].info %></h5>
+                    <h5>Name: <%= results.name %></h5> 
+                    <h5>Poc: <%= results["poc"]%></h5>
+                     
+
+                
+            <%}else{%>
+                <h3 class="text-danger" >Resultados não encontrados</h3>
+            <%}%>  
+            <%}%>
+
+
+            <% if(test == "technologies" ){  %>
+                <%if(results){%>
+    
+                    <%if(results.length > 1){%>
+                        <h4>Resultados encontrados em: <b> <%=target%></b></h4>
+                        <h4>Tipo de teste: <b><%=test%> </b></h4> <br>
+        
+                        <%results.forEach(function(result){%>
+                            <h5>Vulnerabilidade: 
+                                <%result.info.tags.forEach(function(item){%>
+                                   
+                                    <%=item%>   
+        
+                                <%})%>
+                            
+                            </h5>
+                            <h5>Descrição: <%= result.info.description%></h5>
+                            <h5>Severidade: <%= result.info.severity%></h5>
+                            <h5>Tipo: <%= result.type%></h5>
+                            <h5>Host: <%= result.host%></h5>
+                            <h5>Endereço: <%= result.matched-at%></h5>
+                            <h5>Proc: <%= result.curl-command%></h5>
+                            
+                        <%})%> 
+                    
+                      
+                    <%}else{%>
+                        <h4>Resultados encontrados em: <b> <%=target%></b></h4>
+                        <h4>Tipo de teste: <b><%=test%> </b></h4><br><br>
+                        
+                        <h5>Vulnerabilidade: 
+                            <%results[0].info.tags.forEach(function(item){%>
+                               
+                                <%=item%>   
+    
+                            <%})%>
+                        
+                        </h5>
+                        <h5>Descrição: <%= results[0].info.description%></h5>
+                        <h5>Severidade: <%= results[0].info.severity%></h5>
+                        <h5>Tipo: <%= results[0].type%></h5>
+                        <h5>Host: <%= results[0].host%></h5>
+                        <h5>Endereço: <%= results[0].matched-at%></h5>
+                        <h5>Proc: <%= results[0].curl-command%></h5>
+                        
+                    <%}%>
+    
+                
+                <%}else{%>
+                    <h3 class="text-danger" >Resultados não encontrados</h3>
+                <%}%>
+            <%}%>
+    
+        
         </div>
     </section>
 
 </body>
+
+  
 
 </html>

@@ -20,19 +20,20 @@ Login.post('/', async (req, res) => {
      password:req.body.password 
         
     } 
+    console.log(params)
  
 
     try{
 
     const response  = await axios.post(`${api}/login`, params )
-   // console.log(response)
+ 
    
     if(response.data.user.is_admin){
- 
+        
         req.session.user = response.data.user
         req.session.token = response.data.token
         
-        //console.log(req.session.token)
+        console.log(req.session.token)
         res.redirect('/admin/admindashboard')
 
     }else{
@@ -40,15 +41,14 @@ Login.post('/', async (req, res) => {
         req.session.user = response.data.user
         req.session.token = response.data.token
 
-        //console.log(response.data.token)
-        res.render('user/userdashboard',{
-            users:req.session.user
-        })
+        console.log(response.data.token)
+        res.redirect('/user/userdashboard')
 
     }
 
 
     }catch(evt){
+        console.log(evt)
 
         res.redirect('/')
 
