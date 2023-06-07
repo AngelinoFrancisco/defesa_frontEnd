@@ -351,6 +351,7 @@ Userdashboard.get('/user/logout', userAuth, async (req, res) => {
 
     }
 })
+
 Userdashboard.post('/user/threats', userAuth, async (req, res) => {
     const search = {
         test: req.body.test,
@@ -360,61 +361,118 @@ Userdashboard.post('/user/threats', userAuth, async (req, res) => {
         "Authorization": `${req.session.token.type} ${req.session.token.token}`
 
     }
-
-    function exibirModal(){
-        
-        axios.interceptors.request.use(function (config) {
-            // Exibir a modal "Processando..."
-            $('#modal-processando').modal({backdrop: 'static', keyboard: false});
-            return config;
-          }, function (error) {
-            return Promise.reject(error);
-          });
-        
-          axios.interceptors.response.use(function (response) {
-            // Esconder a modal "Processando..." e atualizar o conteúdo da modal com os dados recebidos
-            $('#modal-processando').modal('hide');
-            $('#modal-processando .modal-body').html('Os dados foram recebidos.');
-            return response;
-          }, function (error) {
-            return Promise.reject(error);
-          });
-    }
-
+  
     try {
         await axios.get(`${api}/counts/${search.test}`, {
             headers: config
         })
-
-        console.log("target", search.target)
-
-      //  const response = await axios.post(`${api}/bypass`, search, {
-       //     headers: config
-       // })
-
-
+ 
        if(search.test == "subdomains"){
         const response =  await axios.get(`http://127.0.0.1:1010/api/scanner1/${search.target}`)
          
       const arrDatas = []
-     
-
+      
        arrDatas.push(response.data) 
+       
         return res.render("user/result", {
             test: search.test,
             target: search.target,
             users: req.session.user,
-            results: arrDatas
+            results: arrDatas[0].result
         })
        }
 
     if(search.test == "vulnerabilities"){
         const response =  await axios.get(`http://127.0.0.1:1010/api/scanner2/nuclei?target_name=${search.target}&autoscan=false&tags=low,medium,high,critical`)
          
+  
+       console.log(response.data.length)
+        return res.render("user/result", {
+            test: search.test,
+            target: search.target,
+            users: req.session.user,
+            results: response.data
+        })
+       }
+
+       if(search.test == "clickjacking"){
+        const response =  await axios.get(`http://127.0.0.1:1010/api/scanner4/${search.target}`)
+          
+        console.log(response.data.result[0].length)
+        return res.render("user/result", {
+            test: search.test,
+            target: search.target,
+            users: req.session.user,
+            results: response.data.result[0]
+        })
+       }
+
+
+       if(search.test == "technologies"){
+        const response =  await axios.get(`http://127.0.0.1:1010/api/scanner3/info?target_name=${search.target}.ao&autoscan=true`)
+        
+       console.log(response.data.length)
+       console.log(response.data)
+        return res.render("user/result", {
+            test: search.test,
+            target: search.target,
+            users: req.session.user,
+            results: response.data
+        })
+       }
+
+ 
+    } catch (errors) {
+        console.log(errors)
+        res.redirect('/')
+    }
+})
+
+
+
+
+Userdashboard.post('/user/threat', userAuth, async (req, res) => {
+    const search = {
+        test: req.body.test,
+        target: req.body.url
+    }
+    const config = {
+        "Authorization": `${req.session.token.type} ${req.session.token.token}`
+
+    }
+ 
+
+    try {
+        await axios.get(`${api}/counts/${search.test}`, {
+            headers: config
+        })
+
+    
+      //  const response = await axios.post(`${api}/bypass`, search, {
+       //     headers: config
+       // })
+
+
+    
+       if(search.test == "subdomains"){
+        const response =  await axios.get(`http://127.0.0.1:1010/api/scanner1/${search.target}`)
+         
       const arrDatas = []
-
+      
        arrDatas.push(response.data) 
+       
+        return res.render("user/result", {
+            test: search.test,
+            target: search.target,
+            users: req.session.user,
+            results: arrDatas[0].result
+        })
+       }
 
+       if(search.test == "vulnerabilities"){
+        const response =  await axios.get(`http://127.0.0.1:1010/api/scanner2/nuclei?target_name=${search.target}&autoscan=false&tags=low,medium,high,critical`)
+         
+  
        console.log(response.data.length)
         return res.render("user/result", {
             test: search.test,
@@ -450,12 +508,9 @@ Userdashboard.post('/user/threats', userAuth, async (req, res) => {
 
        if(search.test == "technologies"){
         const response =  await axios.get(`http://127.0.0.1:1010/api/scanner3/info?target_name=${search.target}.ao&autoscan=true`)
-         
-      const arrDatas = []
-
-      // arrDatas.push(response.data) 
-
+        
        console.log(response.data.length)
+       console.log(response.data)
         return res.render("user/result", {
             test: search.test,
             target: search.target,
@@ -470,7 +525,6 @@ Userdashboard.post('/user/threats', userAuth, async (req, res) => {
         res.redirect('/')
     }
 })
-
 
 
 
