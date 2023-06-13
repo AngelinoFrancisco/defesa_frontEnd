@@ -30,11 +30,11 @@
                 </a>
 
                 <a href="/user/gerar_relatorio"> 
-                    Gerar Relatorios
+                    Gerar Relatórios
                 </a>
 
                 <a href="/user/consultar_relatorio"> 
-                    Consultar relarios
+                    Consultar Relatórios
                 </a>
 
                 <a href="/user/perfil"> 
@@ -62,6 +62,17 @@
 
     <section >
         <header style="transform: translateY(-100%);" >
+           
+            <% if (erroTecnico && erroTecnico.length >0 ) { %>
+                <div class="alert alert-danger" id="erro-tecnico">
+                  <%= erroTecnico %>
+                </div>
+                <script>
+                    setTimeout(function() {
+                      document.getElementById('erro-tecnico').style.display = 'none';
+                    }, 3000); // Tempo em milissegundos (neste exemplo, 5 segundos)
+                  </script>
+              <% } %>
             <h3> 
                     Escolha o teste 
                     que pretende 
@@ -77,8 +88,8 @@
                         <option selected disabled> Selecionar teste</option> 
                         <option value="vulnerabilities">vulnerabilidades</option>
                         <option value="subdomains">Subdominios</option>
-                        <option value="technologies">Technologias</option>
-                        <option value="clickjacking">Clickjacking</option>
+                        <option value="portscan" >Port Scanner</option>
+                        <option value="clickjacking" >Clickjacking</option>
                     </select>
                     <input type="text" class="form-control " placeholder="URL | LOCALHOST URL | WEBSITE DOMAIN"
                         name="url"  >

@@ -44,7 +44,7 @@ section{
     border-radius: 1em;
     height: 15em ; 
     width: 40em;
-    background-color: aliceblue;
+    background-color: #EFEEFC;
     padding: 10px;
 }
 
@@ -65,8 +65,7 @@ section{
 
 #quadrados #textarea{
     width: 35em;
-    height: 6em;
-    background-color: white;
+    height: 6em; 
     overflow-y: scroll;
     overflow-x: hidden;
 }

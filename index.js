@@ -6,6 +6,9 @@ const Cadastro = require('./routes/registro')
 const bodyParser = require('body-parser') 
 const axios = require('axios')
 const jwt = require('jsonwebtoken')
+const flash = require("express-flash")
+const cookieParser = require("cookie-parser")
+
 
 
 //Middleware 
@@ -20,6 +23,8 @@ const ejs = require('ejs')
 const resetPassword = require('./routes/resetPassword') 
 const Admin = require('./routes/admin')
 const Userdashboard=require('./routes/userdashboard')  
+app.use(cookieParser())
+app.use(flash())
 
 app.use(express.static('public')) 
 app.set('view engine', 'ejs');

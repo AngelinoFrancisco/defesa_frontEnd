@@ -31,7 +31,7 @@
                 </a>
 
                 <a href="/user/consultar_relatorio"> 
-                    Consultar relarios
+                    Consultar Relatórios
                 </a>
 
                 <a href="/user/perfil"> 
@@ -59,6 +59,29 @@
     </aside>
     <div class="rel">
         <div class="contents">
+            <% if (espacos && espacos.length >0 ) { %>
+                <div class="alert alert-danger" id="flash-message">
+                  <%= espacos %>
+                </div>
+                <script>
+                    setTimeout(function() {
+                      document.getElementById('flash-message').style.display = 'none';
+                    }, 3000); // Tempo em milissegundos (neste exemplo, 5 segundos)
+                  </script>
+              <% } %>
+              
+
+              <% if (camposVazios && camposVazios.length >0 ) { %>
+                <div class="alert alert-danger" id="campos-vazios">
+                  <%= camposVazios %>
+                </div>
+                <script>
+                    setTimeout(function() {
+                      document.getElementById('campos-vazios').style.display = 'none';
+                    }, 3000); // Tempo em milissegundos (neste exemplo, 5 segundos)
+                  </script>
+              <% } %>
+
 
             <form action="/user/gerar_relatorio" method="post" class="card">
 

@@ -30,11 +30,11 @@
                 </a>
 
                 <a href="/user/gerar_relatorio">
-                    Gerar Relatorios
+                    Gerar Relatórios
                 </a>
 
                 <a href="/user/consultar_relatorio">
-                    Consultar relarios
+                    Consultar Relatórios
                 </a>
 
                 <a href="/user/perfil">
@@ -78,8 +78,8 @@
                         <optionr selected disabled> Selecionar teste</option> 
                         <option value="vulnerabilities">vulnerabilidades</option>
                         <option value="subdomains">Subdominios</option> 
-                        <option value="technologies">Technologias</option>
-                        <option value="clickjacking">Clickjacking</option>
+                        <option value="portscan">Port Scanner</option>
+                        <option value="clickjacking" >Clickjacking</option>
                     </select>
                     <input type="text" class="form-control " placeholder="URL | LOCALHOST URL | WEBSITE DOMAIN"
                         name="url">
@@ -107,21 +107,7 @@
                 <h3 class="text-success" >Resultados não encontrados</h3>
             <%}%>
         <%}%>
-
-        <% if(test == "clickjacking" ){  %>
-            <% if(results.length == 129   ) {%>
-                <h4>Resultados encontrados em: <b> <%=target%></b></h4>
-                <h4>Tipo de teste: <b><%=test%> </b></h4> <br>
  
-                    <h5>info: <%= results[0].info %></h5>
-                    <h5>name: <%= results[1].name%></h5>
-                    <h5>poc: <%= results[2].poc%></h5> 
-                   
-
-            <%} else{ %>  
-                <h4 class="text-success" >Nenhum dados encontrados!</h4>
-            <%}%> 
-        <%}%>
 
         <% if(test == "vulnerabilities" ){  %>
             <% if(results.length > 1 ){%>
@@ -176,7 +162,27 @@
 
         <%}%>
 
-        <% if(test == "technologies" ){  %>
+        <% if(test == "clickjacking" ){  %> 
+            <h4>Resultados encontrados em: <b> <%=target%></b></h4>
+            <h4>Tipo de teste: <b><%=test%> </b></h4> <br>
+            <% if(results){ %>  
+                    
+                    <h5>Estado: <%=results.vulnerable%> </h5>
+
+                    <h5>descrição: <%= results.message%></h5>
+                
+            <%}else {%>
+
+                <h4 class="text-success" >Resultados não encontrados!</h4>
+            
+            <%}%>
+
+          
+ 
+
+        <%}%>
+
+        <% if(test == "portscan" ){  %>
             <% if(results.length > 1 ){%>
                 <h4>Resultados encontrados em: <b> <%=target%></b></h4>
                 <h4>Tipo de teste: <b><%=test%> </b></h4> <br>

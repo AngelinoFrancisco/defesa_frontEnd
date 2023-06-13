@@ -7,13 +7,33 @@ const api = require('../middleware/api')
 const generate = require('html-pdf')
 const tempo = new Date()
 const puppeteer = require("puppeteer")
-const fs = require('fs') 
+const fs = require('fs')
+const flash = require("express-flash")
 
 
 Userdashboard.post('/user/gerar_relatorio', userAuth, async (req, res) => {
 
     // const result = Math.floor( Math.random()*123456789987654826376 + 1)
     // console.log(result)
+
+    function validarInput(input) {
+        const regex = /\s/; // Expressão regular para verificar espaços em branco
+        const regexCaracteresEspeciais = /[^a-zA-Z0-9\sç]/g;
+        const regexLetrasAcentuadas = /[áàâãéèêíïóôõöúçñ]/gi;
+
+        const contemEspeciais = regexCaracteresEspeciais.test(input);
+        const contemEspacos = regex.test(input)
+        const contemAcentuadas = regexLetrasAcentuadas.test(input);
+
+        if (contemEspeciais || contemEspacos || contemAcentuadas) {
+
+            return true
+        }
+
+        return false
+
+    }
+
 
 
     const { v4: uuidv4 } = require('uuid')
@@ -29,10 +49,16 @@ Userdashboard.post('/user/gerar_relatorio', userAuth, async (req, res) => {
 
     const filepath = `./public/books/${params.uuid}.pdf`
     if (!params.nome || !params.test || !content) {
+        req.flash('campos-vazios', 'Não pode submeter campos vazios!')
         return res.redirect('/user/gerar_relatorio')
     }
- 
-    try{
+    const validado = validarInput(params.nome)
+    if (validado) {
+        req.flash('relatorio-espaco', "o nome não pode conter espaços, caracteres especias ou acentos")
+        return res.redirect("/user/gerar_relatorio")
+    }
+
+    try {
 
 
         const browser = await puppeteer.launch({
@@ -55,7 +81,7 @@ Userdashboard.post('/user/gerar_relatorio', userAuth, async (req, res) => {
             return res.redirect("/user/consultar_relatorio")
         })
 
-    }catch(err){
+    } catch (err) {
 
         console.error(err)
 
@@ -67,13 +93,15 @@ Userdashboard.post('/user/gerar_relatorio', userAuth, async (req, res) => {
 
 
 Userdashboard.get('/user/userdashboard', userAuth, (req, res) => {
-    res.render('user/userdashboard', { users: req.session.user })
+    const erroTecnico = req.flash('erro-tecnico')
+    res.render('user/userdashboard', { users: req.session.user, erroTecnico })
 
 })
 
 Userdashboard.get('/user/gerar_relatorio', userAuth, (req, res) => {
-
-    res.render('user/relatorio', { users: req.session.user })
+    const espacos = req.flash('relatorio-espaco')
+    const camposVazios = req.flash('campos-vazios')
+    res.render('user/relatorio', { users: req.session.user, espacos, camposVazios })
 
 
 })
@@ -131,6 +159,7 @@ Userdashboard.get('/user/consultar_relatorio', userAuth, async (req, res) => {
     }
 
 
+
     try {
 
         const Duties = await axios.get(`${api}/relatorio/${req.session.user.id}`, {
@@ -146,11 +175,16 @@ Userdashboard.get('/user/consultar_relatorio', userAuth, async (req, res) => {
             return res.redirect('/user/gerar_relatorio')
         }
 
+        const espacos = req.flash('relatorio-espaco')
+        const camposVazios = req.flash('campos-vazios')
+
         res.render('user/relatorios_gerados',
             {
                 users: req.session.user,
                 Duties: Duties.data,
-                Atividades: atividades.data
+                Atividades: atividades.data,
+                camposVazios,
+                espacos
             })
     } catch (erros) {
         console.log(erros)
@@ -169,10 +203,40 @@ Userdashboard.post('/user/filtrar_relatorio', userAuth, async (req, res) => {
     const config = {
         "Authorization": `${req.session.token.type} ${req.session.token.token}`
     }
+    function validarInput(input) {
+        const regex = /\s/; // Expressão regular para verificar espaços em branco
+        const regexCaracteresEspeciais = /[^a-zA-Z0-9\sç]/g;
+        const regexLetrasAcentuadas = /[áàâãéèêíïóôõöúçñ]/gi;
+
+        const contemEspeciais = regexCaracteresEspeciais.test(input);
+        const contemEspacos = regex.test(input)
+        const contemAcentuadas = regexLetrasAcentuadas.test(input);
+
+        if (contemEspeciais || contemEspacos || contemAcentuadas) {
+
+            return true
+        }
+
+        return false
+
+    }
+    const pesquisa = validarInput(search)
+
+    if (!search || search == null) {
+        req.flash('campos-vazios', 'Não pode submeter campos vazios!')
+        return res.redirect('/user/userdashboard')
+    }
+
+    if (pesquisa) {
+        req.flash('relatorio-espaco', "o nome não pode conter espaços, caracteres especias ou acentos")
+        return res.redirect('/user/userdashboard')
+    }
+
+    const response = await axios.get(`${api}/duty/${tipo}/${search}`, {
+        headers: config
+    })
+
     try {
-        const response = await axios.get(`${api}/duty/${tipo}/${search}`, {
-            headers: config
-        })
 
         const atividades = await axios.get(`${api}/atividades`, {
             headers: config
@@ -180,13 +244,17 @@ Userdashboard.post('/user/filtrar_relatorio', userAuth, async (req, res) => {
 
         if (!atividades || atividades.data.length === 0 || !atividades.data) {
 
+            req.flash('erro-tecnico', 'Erro técnico, consulte o Administador!')
             return res.redirect('/user/userdashboard')
         }
 
         if (!response.data || response.data.length === 0 || !response.data) {
 
+            req.flash('erro-tecnico', 'Erro técnico, consulte o Administador!')
             return res.redirect('/user/userdashboard')
         }
+
+
 
 
         return res.render('user/relatorios', {
@@ -361,67 +429,76 @@ Userdashboard.post('/user/threats', userAuth, async (req, res) => {
         "Authorization": `${req.session.token.type} ${req.session.token.token}`
 
     }
-  
+
     try {
         await axios.get(`${api}/counts/${search.test}`, {
             headers: config
         })
- 
-       if(search.test == "subdomains"){
-        const response =  await axios.get(`http://127.0.0.1:1010/api/scanner1/${search.target}`)
-         
-      const arrDatas = []
-      
-       arrDatas.push(response.data) 
-       
-        return res.render("user/result", {
-            test: search.test,
-            target: search.target,
-            users: req.session.user,
-            results: arrDatas[0].result
-        })
-       }
 
-    if(search.test == "vulnerabilities"){
-        const response =  await axios.get(`http://127.0.0.1:1010/api/scanner2/nuclei?target_name=${search.target}&autoscan=false&tags=low,medium,high,critical`)
-         
-  
-       console.log(response.data.length)
-        return res.render("user/result", {
-            test: search.test,
-            target: search.target,
-            users: req.session.user,
-            results: response.data
-        })
-       }
+        if (search.test == "subdomains") {
+            const response = await axios.get(`http://127.0.0.1:1010/api/scanner1/${search.target}`)
 
-       if(search.test == "clickjacking"){
-        const response =  await axios.get(`http://127.0.0.1:1010/api/scanner4/${search.target}`)
-          
-        console.log(response.data.result[0].length)
-        return res.render("user/result", {
-            test: search.test,
-            target: search.target,
-            users: req.session.user,
-            results: response.data.result[0]
-        })
-       }
+            const arrDatas = []
+
+            arrDatas.push(response.data)
+
+            return res.render("user/result", {
+                test: search.test,
+                target: search.target,
+                users: req.session.user,
+                results: arrDatas[0].result
+            })
+        }
+
+        if (search.test == "vulnerabilities") {
+            const response = await axios.get(`http://127.0.0.1:1010/api/scanner2/nuclei?target_name=${search.target}&autoscan=false&tags=low,medium,high,critical`)
 
 
-       if(search.test == "technologies"){
-        const response =  await axios.get(`http://127.0.0.1:1010/api/scanner3/info?target_name=${search.target}.ao&autoscan=true`)
+            console.log(response.data.length)
+            return res.render("user/result", {
+                test: search.test,
+                target: search.target,
+                users: req.session.user,
+                results: response.data
+            })
+        }
+
+        if (search.test == "clickjacking") {
+            const response = await axios.get(`http://127.0.0.1:1010/api/scanner6/${search.target}`)
+
+            //console.log(response.data.result[0].length)
         
-       console.log(response.data.length)
-       console.log(response.data)
-        return res.render("user/result", {
-            test: search.test,
-            target: search.target,
-            users: req.session.user,
-            results: response.data
-        })
-       }
-
  
+            const objetoJSON = JSON.parse(response.data[0]); 
+            console.log(objetoJSON) // undefined
+
+            return res.render("user/result", {
+                test: search.test,
+                target: search.target,
+                users: req.session.user,
+                results:objetoJSON
+            })
+        }
+
+
+        if (search.test == "portscan") {
+            const response = await axios.get(`http://127.0.0.1:1010/api/scanner5/${search.target}`)
+
+            console.log(response.data.length)
+            console.log(response.data)
+
+            const objetoJSON = JSON.parse(response.data[0]); 
+            console.log(objetoJSON) // undefined
+
+            return res.render("user/result", {
+                test: search.test,
+                target: search.target,
+                users: req.session.user,
+                results: objetoJSON
+            })
+        }
+
+
     } catch (errors) {
         console.log(errors)
         res.redirect('/')
@@ -440,86 +517,80 @@ Userdashboard.post('/user/threat', userAuth, async (req, res) => {
         "Authorization": `${req.session.token.type} ${req.session.token.token}`
 
     }
- 
+
 
     try {
         await axios.get(`${api}/counts/${search.test}`, {
             headers: config
         })
 
-    
-      //  const response = await axios.post(`${api}/bypass`, search, {
-       //     headers: config
-       // })
+
+        //  const response = await axios.post(`${api}/bypass`, search, {
+        //     headers: config
+        // })
 
 
-    
-       if(search.test == "subdomains"){
-        const response =  await axios.get(`http://127.0.0.1:1010/api/scanner1/${search.target}`)
-         
-      const arrDatas = []
-      
-       arrDatas.push(response.data) 
-       
-        return res.render("user/result", {
-            test: search.test,
-            target: search.target,
-            users: req.session.user,
-            results: arrDatas[0].result
-        })
-       }
 
-       if(search.test == "vulnerabilities"){
-        const response =  await axios.get(`http://127.0.0.1:1010/api/scanner2/nuclei?target_name=${search.target}&autoscan=false&tags=low,medium,high,critical`)
-         
-  
-       console.log(response.data.length)
-        return res.render("user/result", {
-            test: search.test,
-            target: search.target,
-            users: req.session.user,
-            results: response.data
-        })
-       }
+        if (search.test == "subdomains") {
+            const response = await axios.get(`http://127.0.0.1:1010/api/scanner1/${search.target}`)
 
-       if(search.test == "clickjacking"){
-        const response =  await axios.get(`http://127.0.0.1:1010/api/scanner4/${search.target}`)
-         
-    
+            const arrDatas = []
 
-      //arrDatas.push(response.data)  
+            arrDatas.push(response.data)
+
+            return res.render("user/result", {
+                test: search.test,
+                target: search.target,
+                users: req.session.user,
+                results: arrDatas[0].result
+            })
+        }
+
+        if (search.test == "vulnerabilities") {
+            const response = await axios.get(`http://127.0.0.1:1010/api/scanner2/nuclei?target_name=${search.target}&autoscan=false&tags=low,medium,high,critical`)
+
+
+            console.log(response.data.length)
+            return res.render("user/result", {
+                test: search.test,
+                target: search.target,
+                users: req.session.user,
+                results: response.data
+            })
+        }
+
+        if (search.test == "clickjacking") {
+            const response = await axios.get(`http://127.0.0.1:1010/api/scanner6/${search.target}`)
+
+            //console.log(response.data.result[0].length)
         
-         
-   console.log(response.data.result[0])
  
-    //result = result.replace("[","").replace("]","").replace("'","\"")
-        //arrDatas.push(result)
-       
- 
-        
-        return res.render("user/result", {
-            test: search.test,
-            target: search.target,
-            users: req.session.user,
-            results: response.data.result
-        })
-       }
+            const objetoJSON = JSON.parse(response.data[0]); 
+            console.log(objetoJSON) // undefined
+
+            return res.render("user/result", {
+                test: search.test,
+                target: search.target,
+                users: req.session.user,
+                results:objetoJSON
+            })
+        }
 
 
-       if(search.test == "technologies"){
-        const response =  await axios.get(`http://127.0.0.1:1010/api/scanner3/info?target_name=${search.target}.ao&autoscan=true`)
-        
-       console.log(response.data.length)
-       console.log(response.data)
-        return res.render("user/result", {
-            test: search.test,
-            target: search.target,
-            users: req.session.user,
-            results: response.data
-        })
-       }
+        if (search.test == "portscan") {
+            const response = await axios.get(`http://127.0.0.1:1010/api/scanner5/${search.target}`)
 
- 
+            console.log(response.data.length)
+            console.log(response.data)
+            return res.render("user/result", {
+                test: search.test,
+                target: search.target,
+                users: req.session.user,
+                results: response.data
+            })
+        }
+
+
     } catch (errors) {
         console.log(errors)
         res.redirect('/')
