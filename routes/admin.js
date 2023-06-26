@@ -118,10 +118,17 @@ Admin.get('/admin/admindashboard', authAdmin, async (req, res) => {
         const duties = await axios.get(`${api}/relatorios`, {
             headers: config
         })  
+        const espacos = req.flash('relatorio-espaco')
+        const erroRegistro = req.flash('erro-registro')
+        const successRegistro = req.flash('success-registro')
+        const alertSearch = req.flash('alert-search')
         res.render('admin/admindashboard', { users: req.session.user ,
             Duties:duties.data,
-            Atividades:atividades.data
-        
+            Atividades:atividades.data,
+            successRegistro,
+            erroRegistro,
+            espacos,
+            alertSearch 
             })
 
     } catch (erros) {
@@ -162,8 +169,9 @@ Admin.get('/admin/usuario', authAdmin, async (req, res) => {
                 offlines.push(evt)
             }
         })
-
-
+ 
+        const erroRegistro = req.flash('erro-registro')
+        const userSearch = req.flash('user-search')
 
         res.render('admin/usuario', {
             users: req.session.user,
@@ -171,7 +179,9 @@ Admin.get('/admin/usuario', authAdmin, async (req, res) => {
             userOnlines: onlines,
             userOfflines: offlines,
             ons: online.data,
-            offs: offline.data
+            offs: offline.data,
+            erroRegistro,
+            userSearch 
         })
 
 
@@ -191,14 +201,57 @@ Admin.post('/admin/update', authAdmin, async (req, res) => {
     const updatedUser = {
         nome: req.body.nome,
         email: req.body.email,
-        bipassrecover: req.body.bipassrecover
+        bipassrecover: req.body.bipassrecover,
+        is_admin:req.body.isadmin=='Admin' ? true:false ,
+        password:req.body.password
 
     }
+    function validarInput(input) {
+        const regex = /\s/; // Expressão regular para verificar espaços em branco 
+        const regexLetrasAcentuadas = /[áàâãéèêíïóôõöúçñ]/gi;
+ 
+        const contemEspacos = regex.test(input)
+        const contemAcentuadas = regexLetrasAcentuadas.test(input);
+
+        if (contemEspacos || contemAcentuadas) {
+
+            return true
+        }
+
+        return false
+
+    }
+
+
+    //console.log(updatedUser)
     const config = {
         "Authorization": `${req.session.token.type} ${req.session.token.token}`
     }
 
     try {
+
+        if(!updatedUser.nome || updatedUser.nome == null 
+            || updatedUser.nome == undefined   
+            || !updatedUser.email || updatedUser.email == null 
+            || updatedUser.email == undefined ||  !updatedUser.bipassrecover 
+            || updatedUser.bipassrecover == null || updatedUser.bipassrecover == null  
+            || updatedUser.bipassrecover == undefined
+            || !updatedUser.password || updatedUser.password == null || updatedUser.password == undefined){
+                req.flash('erro-registro','Não pode conter campos vazios ou dados incorrentos')
+                return res.redirect('/admin/usuario')
+            }
+        
+            const validBi = validarInput(updatedUser.bipassrecover)
+            const validEmail = validarInput(updatedUser.email)
+
+
+            if(validBi || validEmail){
+
+                req.flash('user-search','Não pode conter espaços ou dados palavras acentuadas')
+                return res.redirect('/admin/usuario')
+            }
+
+
         const response = await axios.put(`${api}/update_user/${id}`, updatedUser, {
             headers: config
         })
@@ -206,8 +259,8 @@ Admin.post('/admin/update', authAdmin, async (req, res) => {
         if (!response.data) {
             return res.redirect('/admin/logout')
         }
-
-        res.redirect('/admin/admindashboard')
+        req.flash('success-registro', 'Sucesso ao Efectuar o registro!')
+       return res.redirect('/admin/admindashboard')
 
 
     } catch (erros) {
@@ -225,7 +278,39 @@ Admin.post('/admin/filtrar_relatorio', authAdmin, async (req,res)=>{
     const config = {
         "Authorization": `${req.session.token.type} ${req.session.token.token}`
     }
+    function validarInput(input) {
+        const regex = /\s/; // Expressão regular para verificar espaços em branco
+        const regexCaracteresEspeciais = /[^a-zA-Z0-9\sç]/g;
+        const regexLetrasAcentuadas = /[áàâãéèêíïóôõöúçñ]/gi;
+
+        const contemEspeciais = regexCaracteresEspeciais.test(input);
+        const contemEspacos = regex.test(input)
+        const contemAcentuadas = regexLetrasAcentuadas.test(input);
+
+        if (contemEspeciais || contemEspacos || contemAcentuadas) {
+
+            return true
+        }
+
+        return false
+
+    }
+
+
     try {
+        if(!search || search == null || search == undefined || !tipo || tipo == null || tipo == undefined ){
+
+            req.flash('erro-registro','Não pode conter campos vazios ou dados incorrentos')
+            return res.redirect('/admin/admindashboard')
+        }
+
+        const validS = validarInput(search)
+        if(validS){
+            req.flash('relatorio-espaco', "o nome não pode conter espaços, caracteres especias ou acentos")
+            return res.redirect('/admin/admindashboard')
+        }
+
+
         const response = await axios.get(`${api}/duty/${tipo}/${search}`, {
             headers: config
         })
@@ -236,14 +321,19 @@ Admin.post('/admin/filtrar_relatorio', authAdmin, async (req,res)=>{
 
         if(!atividades || atividades.data.length === 0 || !atividades.data ){ 
             console.log("pode estar nas atividades")
-            return res.redirect('/admin/admidashboard')}
+            req.flash('alert-search', 'Melhore a pesquisa, nenhum dado relacionado!')
+             return res.redirect('/admin/admindashboard')}
 
         if (!response.data || response.data.length === 0 || !response.data ) {
             console.log('pode estar no Duties')
-            return res.redirect('/admin/admidashboard')
+            console.log(response.data.length)
+            console.log(response.data)
+            req.flash('alert-search', 'Melhore a pesquisa, nenhum dado relacionado!')
+            return res.redirect('/admin/admindashboard')
         }
  
-
+console.log("duties", response.data)
+console.log("ativ", atividades.data)
        return res.render('admin/relatorio', {
             users: req.session.user,
             Duties: response.data,
@@ -264,13 +354,44 @@ Admin.post('/admin/search', authAdmin, async (req, res) => {
     const config = {
         "Authorization": `${req.session.token.type} ${req.session.token.token}`
     }
+    function validarInput(input) {
+        const regex = /\s/; // Expressão regular para verificar espaços em branco 
+        const regexLetrasAcentuadas = /[áàâãéèêíïóôõöúçñ]/gi;
+ 
+        const contemEspacos = regex.test(input)
+        const contemAcentuadas = regexLetrasAcentuadas.test(input);
+
+        if (contemEspacos || contemAcentuadas) {
+
+            return true
+        }
+
+        return false
+
+    }
 
     try {
+        if(!search || search == null || search == undefined || !tipo || tipo == null || tipo == undefined ){
+
+            req.flash('erro-registro','Não pode conter campos vazios ou dados incorrentos')
+            return res.redirect('/admin/usuario')
+        }
+
+        const validS = validarInput(search)
+
+
+        if(validS){
+
+            req.flash('user-search','Não pode conter espaços ou dados palavras acentuadas')
+            return res.redirect('/admin/usuario')
+        }
+
         const response = await axios.get(`${api}/user/${tipo}/${search}`, {
             headers: config
         })
 
         if (response.data.length === 0 || !response.data) {
+            req.flash('erro-registro','Não pode conter campos vazios ou dados incorrentos')
             return res.redirect('/admin/usuario')
         }
 

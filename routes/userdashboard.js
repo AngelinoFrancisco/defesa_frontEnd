@@ -48,7 +48,7 @@ Userdashboard.post('/user/gerar_relatorio', userAuth, async (req, res) => {
     }
 
     const filepath = `./public/books/${params.uuid}.pdf`
-    if (!params.nome || !params.test || !content) {
+    if (!params.nome || !params.test || !content || params.nome == null || params.test == null || content == null || params.nome == undefined|| params.test == undefined || content == undefined) {
         req.flash('campos-vazios', 'Não pode submeter campos vazios!')
         return res.redirect('/user/gerar_relatorio')
     }
@@ -176,15 +176,16 @@ Userdashboard.get('/user/consultar_relatorio', userAuth, async (req, res) => {
         }
 
         const espacos = req.flash('relatorio-espaco')
-        const camposVazios = req.flash('campos-vazios')
-
+        const camposVazios = req.flash('campos-vazios') 
+        const alertSearch = req.flash('alert-search')
         res.render('user/relatorios_gerados',
             {
                 users: req.session.user,
                 Duties: Duties.data,
                 Atividades: atividades.data,
                 camposVazios,
-                espacos
+                espacos,
+                alertSearch
             })
     } catch (erros) {
         console.log(erros)
@@ -222,36 +223,40 @@ Userdashboard.post('/user/filtrar_relatorio', userAuth, async (req, res) => {
     }
     const pesquisa = validarInput(search)
 
-    if (!search || search == null) {
-        req.flash('campos-vazios', 'Não pode submeter campos vazios!')
-        return res.redirect('/user/userdashboard')
-    }
 
-    if (pesquisa) {
-        req.flash('relatorio-espaco', "o nome não pode conter espaços, caracteres especias ou acentos")
-        return res.redirect('/user/userdashboard')
-    }
 
-    const response = await axios.get(`${api}/duty/${tipo}/${search}`, {
-        headers: config
-    })
+  
 
     try {
+        if(!search || search == null || search == undefined || !tipo || tipo == null || tipo == undefined ){
+            req.flash('campos-vazios','Não pode conter campos vazios ou dados incorrentos')
+          return res.redirect('/user/consultar_relatorio')
+        }
+    
+        if (pesquisa) {
+            req.flash('relatorio-espaco', "o nome não pode conter espaços, caracteres especias ou acentos")
+            return res.redirect('/user/consultar_relatorio')
+        }
 
+        const response = await axios.get(`${api}/duty/${tipo}/${search}`, {
+            headers: config
+        })
         const atividades = await axios.get(`${api}/atividades`, {
             headers: config
         })
 
         if (!atividades || atividades.data.length === 0 || !atividades.data) {
 
+            req.flash('alert-search', 'Melhore a pesquisa, nenhum dado relacionado!')
             req.flash('erro-tecnico', 'Erro técnico, consulte o Administador!')
-            return res.redirect('/user/userdashboard')
+            return res.redirect('/user/consultar_relatorio')
         }
 
         if (!response.data || response.data.length === 0 || !response.data) {
 
+            req.flash('alert-search', 'Melhore a pesquisa, nenhum dado relacionado!')
             req.flash('erro-tecnico', 'Erro técnico, consulte o Administador!')
-            return res.redirect('/user/userdashboard')
+            return res.redirect('/user/consultar_relatorio')
         }
 
 
@@ -441,6 +446,7 @@ Userdashboard.post('/user/threats', userAuth, async (req, res) => {
             const arrDatas = []
 
             arrDatas.push(response.data)
+            console.log(response.data)
 
             return res.render("user/result", {
                 test: search.test,
@@ -484,17 +490,20 @@ Userdashboard.post('/user/threats', userAuth, async (req, res) => {
         if (search.test == "portscan") {
             const response = await axios.get(`http://127.0.0.1:1010/api/scanner5/${search.target}`)
 
-            console.log(response.data.length)
-            console.log(response.data)
+
+            console.log( "sem formatacao", response.data[0])
 
             const objetoJSON = JSON.parse(response.data[0]); 
-            console.log(objetoJSON) // undefined
+            console.log(objetoJSON)
+           // console.log(objetoJSON) // undefined
+            //const jsonString = JSON.stringify(objetoJSON, null, 2); // Converte o objeto JSON em uma string JSON formatada
+ 
 
             return res.render("user/result", {
                 test: search.test,
                 target: search.target,
                 users: req.session.user,
-                results: objetoJSON
+                results: JSON.parse(response.data[0])
             })
         }
 
@@ -580,13 +589,20 @@ Userdashboard.post('/user/threat', userAuth, async (req, res) => {
         if (search.test == "portscan") {
             const response = await axios.get(`http://127.0.0.1:1010/api/scanner5/${search.target}`)
 
-            console.log(response.data.length)
-            console.log(response.data)
+
+            console.log( "sem formatacao", response.data[0])
+
+            const objetoJSON = JSON.parse(response.data[0]); 
+            console.log(objetoJSON)
+           // console.log(objetoJSON) // undefined
+            //const jsonString = JSON.stringify(objetoJSON, null, 2); // Converte o objeto JSON em uma string JSON formatada
+ 
+
             return res.render("user/result", {
                 test: search.test,
                 target: search.target,
                 users: req.session.user,
-                results: response.data
+                results: JSON.parse(response.data[0])
             })
         }
 

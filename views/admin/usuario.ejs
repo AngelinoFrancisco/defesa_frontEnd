@@ -70,26 +70,50 @@
                 <a class="todos">
                     <div class="img"></div><b>Todos</b>
                 </a>
-                <a class="frequentes"  >
+                <a class="frequentes">
                     <div class="img"></div><b>Frequência</b>
                 </a>
-                <a class="operacoes" >
+                <a class="operacoes">
                     <div class="img"></div><b>Atividades</b>
                 </a>
             </header>
             <section>
                 <div id="todos">
+                    <% if (erroRegistro && erroRegistro.length >0 ) { %>
+                        <div class="alert alert-danger" id="flash-message">
+                          <%= erroRegistro %>
+                        </div>
+                        <script>
+                            setTimeout(function() {
+                              document.getElementById('flash-message').style.display = 'none';
+                            }, 3000); // Tempo em milissegundos (neste exemplo, 5 segundos)
+                          </script>
+                      <% } %>
+
+                      <% if (userSearch && userSearch.length >0 ) { %>
+                        <div class="alert alert-danger" id="user-search">
+                          <%= userSearch %>
+                        </div>
+                        <script>
+                            setTimeout(function() {
+                              document.getElementById('user-search').style.display = 'none';
+                            }, 3000); // Tempo em milissegundos (neste exemplo, 5 segundos)
+                          </script>
+                      <% } %>
+                      
+                   
                     <div class="filtro my-3">
+
 
                         <p class="titulo"><b>Todos Usuários</b></p>
                         <form action="/admin/search" method="post">
 
                             <input type="text" id="pesquisa" name="search" class="form-control " placeholder="pesquisa">
 
-                            <select name="tipo"  class=" form-control"> 
+                            <select name="tipo" class=" form-control">
                                 <option disabled selected>Selecionar</option>
-                                <option value="email">  Email do usuário</option>
-                                <option value="nome">Nome do Usuário</option>
+                                <option value="email"> Email do usuário</option>
+                                <option value="bipassrecover">Bi do Usuário</option>
 
                             </select>
 
@@ -97,16 +121,15 @@
                         </form>
                     </div>
 
-                    <div class="usuarios">
+                    <div class="usuarios" >
                         <% dados.forEach(function(dado){%>
-                            <form action="/admin/update" id="quadrados" method="post">
+                            <form action="/admin/update" id="quadrados" method="post"  >
                                 <div class="row1">
                                     <input type="text" name="id" hidden value="<%= dado.id %>">
+ 
+                                    <input type="text" name="nome" value="<%= dado.nome%>" class="form-control " required>
 
-                                    <div class="personal"></div>
-                                    <input type="text" name="nome" value="<%= dado.nome%>" class="form-control ">
-
-                                    <input type="text" name="email" value="<%= dado.email%>" class="form-control ">
+                                    <input type="text" name="email" value="<%= dado.email%>" class="form-control " required>
 
 
 
@@ -117,13 +140,28 @@
 
 
                                     <input type="text" name="bipassrecover" value="<%=dado.bipassrecover %>"
-                                        class="form-control ">
+                                        class="form-control my-2" required>
 
-                                    <a class="btn btn-danger " href="/admin/delete/<%=dado.id%>" target="_self">Excluir</a>
+                                    <input type="text" name="password" value="<%=dado.password%>" class="form-control my-2">
 
-                                    <button type="submit" id="sendLink" class="btn btn-success my-2"
-                                        target="_self">Update
-                                    </button>
+                                </div>
+
+                                <div class="row">
+                                    <div >
+                                        <input type="radio" name="isadmin" value="Admin" id="Admin" <% if (dado.is_admin) { %>checked<% } %>>
+                                        <label for="Admin" style="padding-left: -20px;">Admin</label>
+
+                                        <input type="radio" name="isadmin" value="User id="User" <% if (!dado.is_admin) { %>checked<% } %> >
+                                        <label for="User">User</label>
+                                    </div>
+                             <div>
+                                <a class="btn btn-danger " href="/admin/delete/<%=dado.id%>"
+                                    target="_self" style="margin-left:100px;">Excluir</a>
+
+                                <button type="submit" id="sendLink" class="btn btn-success my-2"
+                                    target="_self">Update
+                                </button> 
+                             </div>
 
                                 </div>
 
@@ -133,68 +171,72 @@
                 </div>
 
                 <div id="frequentes">
- 
 
-                        <p class="titulo my-2"><b>Usuários Online</b></p>
-                        <div class="cards" id="ativos">
-                            <div class="dados-ativos ">
-                                <div class="row1"> 
-                                    <label for="nome"><b>Nome</b></label> 
-                                    <label for="data"><b>Data de Acesso</b></label>
-                                </div>
 
-                                <div id="onlines" class="scroll">
-                                    <% userOnlines.forEach(function(online){%>
-                                        <% ons.forEach(function(on){%>
-                                            <% if(online.id == on.user_id){%>
-                                        <div class="row2">
-                                            <input type="text" name="nome" id="nome" value="<%=online.nome %>" class="form-control" disabled> 
-                                            <input type="text" name="data" id="data" value="<%= on.created_at %>" class="form-control" disabled>
-                                        </div>
-                                        
-                                    <% }; %>
-                                    <% }); %>
-                                    <% }); %>
-                                </div>
+                    <p class="titulo my-2"><b>Usuários Online</b></p>
+                    <div class="cards" id="ativos">
+                        <div class="dados-ativos ">
+                            <div class="row1">
+                                <label for="nome"><b>Nome</b></label>
+                                <label for="data"><b>Data de Acesso</b></label>
                             </div>
 
+                            <div id="onlines" class="scroll">
+                                <% userOnlines.forEach(function(online){%>
+                                    <% ons.forEach(function(on){%>
+                                        <% if(online.id==on.user_id){%>
+                                            <div class="row2">
+                                                <input type="text" name="nome" id="nome" value="<%=online.nome %>"
+                                                    class="form-control" disabled>
+                                                <input type="text" name="data" id="data" value="<%= on.created_at %>"
+                                                    class="form-control" disabled>
+                                            </div>
 
-
-
-
+                                            <% }; %>
+                                                <% }); %>
+                                                    <% }); %>
+                            </div>
                         </div>
 
 
-                        <p class="titulo my-2"><b>Usuários Offline</b></p>
-                        <div class="cards" id="inativos">
 
-                            <div class="dados-ativos  ">
-                                <div class="row1">
- 
-                                    <label for="nome"><b>Nome</b></label> 
-                                    <label for="data"><b>Data de Saída</b></label>
-                                </div>
-                                
-                                <div id="offlines" class="scroll">
-                                         
+
+
+                    </div>
+
+
+                    <p class="titulo my-2"><b>Usuários Offline</b></p>
+                    <div class="cards" id="inativos">
+
+                        <div class="dados-ativos  ">
+                            <div class="row1">
+
+                                <label for="nome"><b>Nome</b></label>
+                                <label for="data"><b>Data de Saída</b></label>
+                            </div>
+
+                            <div id="offlines" class="scroll">
+
                                 <% userOfflines.forEach(function(offline){%>
-                                <% offs.forEach(function(off){%>
-                                    <% if(offline.id == off.user_id){%>
-                                    <div class="row2">
-                                        <input type="text" name="nome" id="nome" value="<%=offline.nome %>" class="form-control" disabled> 
-                                        <input type="text" name="data" id="data" value="<%= off.updated_at %>"  class="form-control" disabled>
-                                    </div>
-                                    
-                                <% } %>
-                                   
-                                <% }); %>
-                                <% }); %>
-                                </div>
+                                    <% offs.forEach(function(off){%>
+                                        <% if(offline.id==off.user_id){%>
+                                            <div class="row2">
+                                                <input type="text" name="nome" id="nome" value="<%=offline.nome %>"
+                                                    class="form-control" disabled>
+                                                <input type="text" name="data" id="data" value="<%= off.updated_at %>"
+                                                    class="form-control" disabled>
+                                            </div>
 
+                                            <% } %>
+
+                                                <% }); %>
+                                                    <% }); %>
                             </div>
 
                         </div>
- 
+
+                    </div>
+
                 </div>
 
                 <div id="operacoes">
@@ -203,7 +245,7 @@
                         <div class="body-card">
                             <canvas id="mychart"></canvas>
                         </div>
-                        <a class="btn btn-success my-4" href="/admin/usuario"  >Atualizar gráfico</a>
+                        <a class="btn btn-success my-4" href="/admin/usuario">Atualizar gráfico</a>
 
                     </div>
 

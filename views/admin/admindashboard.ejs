@@ -63,10 +63,51 @@
 
 
         <div class="rel">
-            <div class="contents">
-
+            
+            <div class="contents"> 
+               
+                <% if (erroRegistro && erroRegistro.length >0 ) { %>
+                    <div class="alert alert-danger" id="flash-message">
+                      <%= erroRegistro %>
+                    </div>
+                    <script>
+                        setTimeout(function() {
+                          document.getElementById('flash-message').style.display = 'none';
+                        }, 3000); // Tempo em milissegundos (neste exemplo, 5 segundos)
+                      </script>
+                  <% } %>
+                  <% if (alertSearch && alertSearch.length >0 ) { %>
+                    <div class="alert alert-danger" id="alert-search">
+                      <%= alertSearch %>
+                    </div>
+                    <script>
+                        setTimeout(function() {
+                          document.getElementById('alert-search').style.display = 'none';
+                        }, 3000); // Tempo em milissegundos (neste exemplo, 5 segundos)
+                      </script>
+                  <% } %>
+                  <% if (espacos && espacos.length >0 ) { %>
+                    <div class="alert alert-danger" id="flash-message">
+                      <%= espacos %>
+                    </div>
+                    <script>
+                        setTimeout(function() {
+                          document.getElementById('flash-message').style.display = 'none';
+                        }, 3000); // Tempo em milissegundos (neste exemplo, 5 segundos)
+                      </script>
+                  <% } %>
+                <% if (successRegistro && successRegistro.length >0 ) { %>
+                    <div class="alert alert-success" id="suceess-registro">
+                      <%= successRegistro %>
+                    </div>
+                    <script>
+                        setTimeout(function() {
+                          document.getElementById('suceess-registro').style.display = 'none';
+                        }, 3000); // Tempo em milissegundos (neste exemplo, 5 segundos)
+                      </script>
+                  <% } %>
                 <form action="/admin/filtrar_relatorio" class="cards" method="post">
-
+                  
                     <div class="card-body"><b class="titulo">Todos os Relatórios</b></div>
                     <div id="consult" class="my-2">
                         <input type="text" id="pesquisa" name="search" class="form-control mt"

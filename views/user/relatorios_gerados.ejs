@@ -84,7 +84,16 @@
                     }, 3000); // Tempo em milissegundos (neste exemplo, 5 segundos)
                   </script>
               <% } %>
-
+              <% if (alertSearch && alertSearch.length >0 ) { %>
+                <div class="alert alert-danger" id="alert-search">
+                  <%= alertSearch %>
+                </div>
+                <script>
+                    setTimeout(function() {
+                      document.getElementById('alert-search').style.display = 'none';
+                    }, 3000); // Tempo em milissegundos (neste exemplo, 5 segundos)
+                  </script>
+              <% } %>
             <form action="/user/filtrar_relatorio" class="cards"  method="post">
 
                 <div class="card-body"><b class="titulo">Todos os Relatórios</b></div>

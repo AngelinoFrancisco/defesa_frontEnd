@@ -16,7 +16,7 @@ $(document).ready(function () {
             dados.forEach(evt => { if (evt.id == 1) xss.push(evt) })
             dados.forEach(evt => { if (evt.id == 2) domains.push(evt) })
             dados.forEach(evt => { if (evt.id == 3) sql.push(evt) })
-            dados.forEach(evt => { if (evt.id == 4) scanner.push(evt) })
+            dados.forEach(evt => { if (evt.id == 5) scanner.push(evt) })
 
 
 
